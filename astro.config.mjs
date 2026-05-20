@@ -22,6 +22,7 @@ export default defineConfig({
   //     prefixDefaultLocale: false,
   //   },
   // },
+  output: 'static',
   prefetch: true,
   integrations: [
     sitemap({
