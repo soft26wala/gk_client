@@ -29,6 +29,9 @@ importers:
       clipboard:
         specifier: ^2.0.11
         version: 2.0.11
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
       globby:
         specifier: ^16.2.0
         version: 16.2.0
@@ -1282,6 +1285,10 @@ packages:
 
   dot-case@3.0.4:
     resolution: {integrity: sha512-Kv5nKlh6yRrdrGvxeJ2e5y2eRUpkUosIW4A2AS38zwSz27zu7ufDwQPi5Jhs3XAlGNetl3bmnGhQsMtkKJnj3w==}
+
+  dotenv@17.4.2:
+    resolution: {integrity: sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==}
+    engines: {node: '>=12'}
 
   dropzone@6.0.0-beta.2:
     resolution: {integrity: sha512-k44yLuFFhRk53M8zP71FaaNzJYIzr99SKmpbO/oZKNslDjNXQsBTdfLs+iONd0U0L94zzlFzRnFdqbLcs7h9fQ==}
@@ -3969,6 +3976,8 @@ snapshots:
     dependencies:
       no-case: 3.0.4
       tslib: 2.8.1
+
+  dotenv@17.4.2: {}
 
   dropzone@6.0.0-beta.2:
     dependencies:
