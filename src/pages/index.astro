@@ -10,11 +10,13 @@ import TestimonialsSection from '@components/sections/testimonials/TestimonialsS
 import PricingSection from '@components/sections/pricing/PricingSection.astro';
 import FAQ from '@components/sections/misc/FAQ.astro';
 import AnnouncementBanner from '@components/ui/banners/AnnouncementBanner.astro';
-import heroImage from '@images/hero-image.avif';
+import heroImage from '@images/gkpic1.avif';
+// import heroImage from '@images/hero-image.avif';
 import faqs from '@data/faqs.json';
 import features from '@data/features.json';
 import pricing from '@data/pricing.json';
-import featureImage from '@images/features-image.avif';
+import featureImage from '@images/midpic3.avif';
+// import featureImage from '@images/features-image.avif';
 import construction from '@images/construction-image.avif';
 import tools from '@images/automated-tools.avif';
 import dashboard from '@images/dashboard-image.avif';
@@ -29,16 +31,16 @@ const avatarSrcs: Array<string> = [
 ---
 
 <MainLayout>
-  <AnnouncementBanner
+  <!-- <AnnouncementBanner
     btnId="dismiss-button"
     btnTitle="Explore ScrewFast on GitHub"
     url="https://github.com/mearashadowfax/ScrewFast"
-  />
+  /> -->
 
   <HeroSection
-    title=`Equip Your Projects with <span
-        class="text-yellow-500 dark:text-yellow-400">ScrewFast</span>`
-    subTitle="Top-quality hardware tools and expert construction services for every project need."
+    title=`Mechanical Splicing <span
+        class="text-yellow-500 dark:text-yellow-400">G k Enterprise</span>`
+    subTitle="Revolutionizing Hardware and Construction Solutions with Cutting-Edge Tools and Expert Services"
     primaryBtn="Start Exploring"
     primaryBtnURL="/products"
     secondaryBtn="Contact Sales Team"
@@ -67,40 +69,42 @@ const avatarSrcs: Array<string> = [
   />
 
   <FeaturesNavs
-    title=`Customize <span class="text-yellow-500 dark:text-yellow-400">ScrewFast</span>'s offerings to perfectly suit your hardware and construction needs.`
+    title=`<span class="text-yellow-500 dark:text-yellow-400">G k Enterprise</span>' is a leading supplier of value added products and services for the construction industry. We supply products to Infrastructure, residential and commercial projects.`
     tabs={[
       {
-        heading: 'Cutting-Edge Tools',
+        heading: 'Sariya Joint Coupler',
         content:
-          "Empower your projects with ScrewFast's cutting-edge tools. Experience enhanced efficiency in construction management with our sophisticated automated solutions.",
+          "This tool is used to join reinforcement bars (sariya) securely and efficiently. It connects two steel bars with strong threading technology, ensuring maximum strength, durability, and safety in construction projects. Sariya Joint Couplers help improve structural stability and reduce material wastage, making them ideal for residential, commercial, and infrastructure construction.",
         svg: 'tools',
         src: tools,
         alt: 'Yellow and black heavy equipment on brown grass field',
         first: true,
       },
       {
-        heading: 'Intuitive Dashboards',
+        heading: 'Rebar Mechanical Joint System',
         content:
-          "Navigate with ease using ScrewFast's intuitive dashboards. Set up and oversee your projects seamlessly, with user-friendly interfaces designed for quick and effective workflow management.",
+          `This mechanical joint system is used to connect reinforcement bars (rebars) without welding. It provides a strong, reliable, and durable connection that improves structural stability in construction projects. The system ensures proper load transfer between steel bars, reduces material wastage, and increases construction efficiency for residential, commercial, and infrastructure applications.
+
+`,
         svg: 'dashboard',
         src: dashboard,
         alt: 'A screenshot or graphic representation of the intuitive dashboard',
         second: true,
       },
-      {
-        heading: 'Robust Features',
-        content:
-          "Minimize complexity, maximize productivity. ScrewFast's robust features are engineered to streamline your construction process, delivering results that stand out for their excellence.",
-        svg: 'house',
-        src: construction,
-        alt: 'Gray metal building frame near tower crane during daytime',
-      },
+      // {
+      //   heading: 'Robust Features',
+      //   content:
+      //     "Minimize complexity, maximize productivity. G k Enterprise's robust features are engineered to streamline your construction process, delivering results that stand out for their excellence.",
+      //   svg: 'house',
+      //   src: construction,
+      //   alt: 'Gray metal building frame near tower crane during daytime',
+      // },
     ]}
   />
 
   <TestimonialsSection
     title="Fast-Track Your Projects"
-    subTitle="At ScrewFast, we ensure a swift start with instant account setup. Experience the speed of construction redefined."
+    subTitle="At G k Enterprise, we ensure a swift start with instant account setup. Experience the speed of construction redefined."
     ;
     testimonials={[
       {

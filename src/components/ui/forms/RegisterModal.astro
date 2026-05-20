@@ -5,6 +5,7 @@ import PasswordInput from './input/PasswordInput.astro';
 import Checkbox from './input/Checkbox.astro';
 import GoogleBtn from '@components/ui/buttons/GoogleBtn.astro';
 import AuthBtn from '@components/ui/buttons/AuthBtn.astro';
+import TextInput from './input/TextInput.astro';
 // Config object for customization of the component
 const config = {
   id: 'hs-toggle-between-modals-register-modal', // Modal identifier
@@ -60,9 +61,15 @@ const config = {
               Or
             </div>
             {/* Registration form */}
-            <form>
+            <form  id="signupForm">
               <div class="grid gap-y-4">
                 {/* Email input field */}
+                <TextInput
+                  id="register-name"
+                  name="name"
+                  label="Name"
+                  />
+
                 <EmailInput
                   id="register-email"
                   errorId="register-email-error"
@@ -83,12 +90,20 @@ const config = {
                 {
                   /* Checkbox with a label and a link for accepting the terms and conditions */
                 }
-                <Checkbox label="I accept the " , id="terms-agree">
-                  <a
-                    class="font-medium text-orange-400 decoration-2 hover:underline dark:text-orange-400 dark:focus:outline-hidden"
-                    href="#">Terms and Conditions</a
-                  >
-                </Checkbox>
+                <div class="relative z-10">
+  <Checkbox id="terms-agree">
+    <span class="text-sm text-neutral-600 dark:text-neutral-400">
+      I accept the 
+      <a
+        class="inline-block cursor-pointer font-medium text-orange-400 decoration-2 hover:underline focus:outline-hidden"
+        href="/terms"
+        target="_blank"
+      >
+        Terms and Conditions
+      </a>
+    </span>
+  </Checkbox>
+</div>
                 {/* Submit button for the registration form */}
                 <AuthBtn title="Sign up" />
               </div>
@@ -99,3 +114,67 @@ const config = {
     </div>
   </div>
 </div>
+
+
+<script>
+  const form = document.getElementById("signupForm") as HTMLFormElement;
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Select elements
+    const nameInput = document.getElementById("register-name") as HTMLInputElement;
+    const emailInput = document.getElementById("register-email") as HTMLInputElement;
+    const passwordInput = document.getElementById("create-password") as HTMLInputElement;
+    const confirmPasswordInput = document.getElementById("confirm-password") as HTMLInputElement;
+    const termsCheckbox = document.getElementById("terms-agree") as HTMLInputElement;
+
+    // 1. Basic Validation
+    if (passwordInput.value !== confirmPasswordInput.value) {
+      window.showToast("Passwords do not match!", 'error');
+      return;
+    }
+
+    if (!termsCheckbox.checked) {
+      window.showToast("Please accept the Terms and Conditions.", 'error');
+      return;
+    }
+
+    try {
+      // 2. Disable button to prevent spam
+      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      if (submitBtn) submitBtn.disabled = true;
+
+      const res = await fetch("http://localhost:4000/user/signup-manual", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: nameInput.value,
+          email: emailInput.value,
+          password: passwordInput.value,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Signup failed");
+      }
+
+      // 3. Handle Success
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      
+      window.showToast("Signup Success!", 'success');
+      window.location.href = "/";
+
+    } catch (err: any) {
+      console.error(err);
+      window.showToast(err.message || "Server Error", 'error');
+    } finally {
+      // Re-enable button
+      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      if (submitBtn) submitBtn.disabled = false;
+    }
+  });
+</script>

@@ -67,7 +67,7 @@ interface Props {
     {
       /* Action Button Section: This section includes two CTAs with their own styles and URL */
     }
-    <div class="mt-7 grid w-full gap-3 sm:inline-flex">
+    <div class="mt-7 grid w-full gap-3 sm:inline-flex"> 
       {primaryBtn && <PrimaryCTA title={primaryBtn} url={primaryBtnURL} />}
       {
         secondaryBtn && (
@@ -95,6 +95,7 @@ interface Props {
   {/* Hero Image Section */}
   <div class="flex w-full">
     <div class="top-12 overflow-hidden">
+    <!-- <div class="relative overflow-hidden h-[24rem] w-full rounded-[1.75rem] sm:h-[32rem] md:h-[40rem]"> -->
       {
         src && alt && (
           <Image

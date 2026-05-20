@@ -41,7 +41,7 @@ const formSubTitle: string = "We'll get back to you in 1-2 business days.";
           /* Form for user input with various input fields.-->
         {/* Each field utilizes a different input component for the specific type of input (text, email, phone, and textarea)*/
         }
-        <form>
+        <form id="contactForm">
           <div class="grid gap-4">
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <TextInput
@@ -120,3 +120,57 @@ const formSubTitle: string = "We'll get back to you in 1-2 business days.";
     </div>
   </div>
 </section>
+
+<script>
+  const form = document.getElementById("contactForm") as HTMLFormElement;
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Get form values
+    const firstNameInput = document.getElementById("hs-firstname-contacts") as HTMLInputElement;
+    const lastNameInput = document.getElementById("hs-lastname-contacts") as HTMLInputElement;
+    const emailInput = document.getElementById("hs-email-contacts") as HTMLInputElement;
+    const phoneInput = document.getElementById("hs-phone-number") as HTMLInputElement;
+    const detailsInput = document.getElementById("hs-about-contacts") as HTMLTextAreaElement;
+
+    try {
+      // Disable button to prevent spam
+      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      if (submitBtn) submitBtn.disabled = true;
+
+      // Send data to backend (replace with your actual endpoint)
+      const res = await fetch("http://localhost:4000/contact/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: firstNameInput.value,
+          lastName: lastNameInput.value,
+          email: emailInput.value,
+          phone: phoneInput.value,
+          details: detailsInput.value,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to send message");
+      }
+
+      // Show success message
+      window.showToast("Message sent successfully! We'll get back to you soon.", 'success');
+      
+      // Clear the form
+      form.reset();
+
+    } catch (err: any) {
+      console.error(err);
+      window.showToast(err.message || "Failed to send message. Please try again.", 'error');
+    } finally {
+      // Re-enable button
+      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      if (submitBtn) submitBtn.disabled = false;
+    }
+  });
+</script>

@@ -57,7 +57,7 @@ const config = {
               Or
             </div>
             {/* The container for the form */}
-            <form>
+            <form id="loginForm" novalidate>
               {/* A grid layout for the form fields */}
               <div class="grid gap-y-4">
                 {/* The email input field */}
@@ -65,12 +65,14 @@ const config = {
                 {/* The password input field */}
                 <PasswordInput
                   forgot={true}
-                  id="password"
+                  id="login-password"
                   errorId="login-password-error"
                   content="8+ characters required"
                 />
                 {/* The remember-me checkbox */}
                 <Checkbox id="remember-me" />
+                {/* Error message display */}
+                <p id="login-error-msg" class="hidden text-sm text-red-500 text-center font-medium"></p>
                 {/* The sign-in button */}
                 <AuthBtn title="Sign in" />
               </div>
@@ -81,3 +83,80 @@ const config = {
     </div>
   </div>
 </div>
+
+<script>
+  const loginForm = document.getElementById('loginForm') as HTMLFormElement | null;
+  const loginErrorMsg = document.getElementById('login-error-msg');
+
+  loginForm?.addEventListener('submit', async (e) => {
+    e.preventDefault(); // URL mein data nahi jaayega
+
+    const emailInput = document.getElementById('login-email') as HTMLInputElement | null;
+    const passwordInput = document.getElementById('login-password') as HTMLInputElement | null;
+
+    const email = emailInput?.value.trim() ?? '';
+    const password = passwordInput?.value ?? '';
+
+    if (!email || !password) {
+      if (loginErrorMsg) {
+        loginErrorMsg.textContent = 'Email aur password dono zaroori hain.';
+        loginErrorMsg.classList.remove('hidden');
+      }
+      return;
+    }
+
+    const submitBtn = loginForm.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Signing in...';
+    }
+
+    try {
+      const apiBase = import.meta.env.PUBLIC_API || 'http://localhost:4000';
+      const response = await fetch(`${apiBase}/user/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Token ya session store karo
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
+        }
+        if (data.role === 'admin') {
+          window.location.href = '/admin';
+        } else {
+          window.location.reload();
+        }
+      } else {
+        if (loginErrorMsg) {
+          loginErrorMsg.textContent = data.message || 'Login failed. Please try again.';
+          loginErrorMsg.classList.remove('hidden');
+        }
+      }
+    } catch (err) {
+      if (loginErrorMsg) {
+        loginErrorMsg.textContent = 'Server se connect nahi ho pa raha. Please try again.';
+        loginErrorMsg.classList.remove('hidden');
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Sign in';
+      }
+    }
+  });
+
+  // Error message hide karo jab user type kare
+  loginForm?.addEventListener('input', () => {
+    if (loginErrorMsg) loginErrorMsg.classList.add('hidden');
+  });
+</script>
+
+
+
+

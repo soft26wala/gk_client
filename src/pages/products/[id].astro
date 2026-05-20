@@ -1,409 +1,152 @@
 ---
-// Import section components
-import MainLayout from '@/layouts/MainLayout.astro';
-import ProductTabBtn from '@components/ui/buttons/ProductTabBtn.astro';
-import PrimaryCTA from '@components/ui/buttons/PrimaryCTA.astro';
-import { Image } from 'astro:assets';
-import { getCollection } from 'astro:content';
-import { SITE } from '@data/constants';
-
-// Global declaration for gsap animation library
-declare global {
-  interface Window {
-    gsap: any;
-  }
-}
-
-// This gets the static paths for all the unique products
+import Layout from '../../layouts/AdminLayout.astro';
+export const prerender = false;
 
 export async function getStaticPaths() {
-  const productEntries = await getCollection('products', ({ id }) =>
-    id.startsWith('en/')
-  );
-  return productEntries.map(product => {
-    const idWithoutLang = product.id.replace(/^en\//, ''); // Remove the "en/" prefix
-    return {
-      params: { id: idWithoutLang },
-      props: { product },
-    };
-  });
-}
+  let templates = [];
 
-const { product } = Astro.props;
-
-const pageTitle: string = `${product.data.title} | ${SITE.title}`;
-const metaDescription = product.data.description;
-const ogTitle = `${product.data.title} | Hardware Tools | ScrewFast`;
----
-
-<MainLayout
-  title={pageTitle}
-  customDescription={metaDescription}
-  customOgTitle={ogTitle}
-  structuredData={{
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    '@id': `https://screwfast.uk/products/${product.data.title.toLowerCase().replace(/\s+/g, '-')}`,
-    name: product.data.title,
-    description: product.data.description,
-    brand: {
-      '@type': 'Brand',
-      name: 'ScrewFast',
-    },
-  }}
->
-  <div id="overlay" class="fixed inset-0 bg-neutral-200 dark:bg-neutral-800">
-  </div>
-
-  <section
-    class="mx-auto flex max-w-[85rem] flex-col px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full"
-  >
-    <div>
-      <p
-        id="fadeText"
-        class="mb-8 max-w-prose font-light text-pretty text-neutral-700 sm:text-xl dark:text-neutral-300"
-      >
-        {product.data.main.content}
-      </p>
-    </div>
-    <div
-      class="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0"
-    >
-      <div id="fadeInUp">
-        <h1
-          class="block text-4xl font-bold tracking-tighter text-neutral-800 sm:text-5xl md:text-6xl lg:text-7xl dark:text-neutral-200"
-        >
-          {product.data.title}
-        </h1>
-        <p class="text-lg text-neutral-600 dark:text-neutral-400">
-          {product.data.description}
-        </p>
-      </div>
-      <div>
-        <Image
-          id="fadeInMoveRight"
-          src={product.data.main.imgMain}
-          class="w-[600px]"
-          alt={product.data.main.imgAlt}
-          format={'avif'}
-          loading={'eager'}
-        />
-      </div>
-    </div>
-  </section>
-
-  <div class="mx-auto max-w-[85rem] px-4 pt-10 sm:px-6 lg:px-8 lg:pt-14">
-    <nav
-      class="mx-auto grid max-w-6xl gap-y-px sm:flex sm:gap-x-4 sm:gap-y-0"
-      aria-label="Tabs"
-      role="tablist"
-    >
-      {
-        product.data.tabs.map((tab, index) => (
-          <ProductTabBtn
-            title={tab.title}
-            id={tab.id}
-            dataTab={tab.dataTab}
-            first={index === 0}
-          />
-        ))
-      }
-    </nav>
-
-    <div class="mt-12 md:mt-16">
-      <div id="tabs-with-card-1" role="tabpanel">
-        <div class="mx-auto max-w-[85rem] px-4 pb-10 sm:px-6 lg:px-8 lg:pb-14">
-          <div class="grid gap-12 md:grid-cols-2">
-            <div class="lg:w-3/4">
-              <h2
-                class="text-3xl font-bold tracking-tight text-balance text-neutral-800 md:leading-tight lg:text-4xl dark:text-neutral-200"
-              >
-                {product.data.longDescription.title}
-              </h2>
-              <p
-                class="mt-3 text-pretty text-neutral-600 dark:text-neutral-400"
-              >
-                {product.data.longDescription.subTitle}
-              </p>
-              <p class="mt-5">
-                <PrimaryCTA
-                  title={product.data.longDescription.btnTitle}
-                  url={product.data.longDescription.btnURL}
-                />
-              </p>
-            </div>
-
-            <div class="space-y-6 lg:space-y-10">
-              {
-                product.data.descriptionList.map(list => (
-                  <div class="flex">
-                    <div>
-                      <h3 class="text-base font-bold text-neutral-800 sm:text-lg dark:text-neutral-200">
-                        {list.title}
-                      </h3>
-                      <p class="mt-1 text-neutral-600 dark:text-neutral-400">
-                        {list.subTitle}
-                      </p>
-                    </div>
-                  </div>
-                ))
-              }
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="tabs-with-card-2" class="hidden" role="tabpanel">
-        <div class="mx-auto max-w-[85rem] px-4 pb-10 sm:px-6 lg:px-8 lg:pb-14">
-          <div class="grid w-full grid-cols-1 gap-x-16 md:grid-cols-2">
-            <div class="max-w-md space-y-6">
-              {
-                product.data.specificationsLeft.map(spec => (
-                  <div>
-                    <h3 class="block font-bold text-neutral-800 dark:text-neutral-200">
-                      {spec.title}
-                    </h3>
-                    <p class="text-neutral-600 dark:text-neutral-400">
-                      {spec.subTitle}
-                    </p>
-                  </div>
-                ))
-              }
-            </div>
-            {
-              product.data.specificationsRight ? (
-                <div class="mt-6 max-w-md space-y-6 md:mt-0 md:ml-auto">
-                  {product.data.specificationsRight?.map(spec => (
-                    <div>
-                      <h3 class="block font-bold text-neutral-800 dark:text-neutral-200">
-                        {spec.title}
-                      </h3>
-                      <p class="text-neutral-600 dark:text-neutral-400">
-                        {spec.subTitle}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              ) : product.data.tableData ? (
-                <div class="mt-6 space-y-6 md:mt-0 md:ml-auto">
-                  <div class="flex flex-col">
-                    <div class="-m-1.5 overflow-x-auto">
-                      <div class="inline-block min-w-full p-1.5 align-middle">
-                        <div class="overflow-hidden">
-                          <table class="min-w-full divide-y divide-neutral-300 dark:divide-neutral-700">
-                            <thead>
-                              <tr>
-                                {product.data.tableData?.[0].feature?.map(
-                                  header => (
-                                    <th
-                                      scope="col"
-                                      class="px-6 py-3 text-start text-xs font-medium text-neutral-500 uppercase dark:text-neutral-500"
-                                    >
-                                      {header}
-                                    </th>
-                                  )
-                                )}
-                              </tr>
-                            </thead>
-                            <tbody class="divide-y divide-neutral-300 dark:divide-neutral-700">
-                              {product.data.tableData?.map(row =>
-                                // Wrap each row's content in a separate <tr> element
-                                row.description.map(rowData => (
-                                  <tr>
-                                    {/* Iterate through each cell value in the row's description array */}
-                                    {rowData.map(cellValue => (
-                                      // Render each cell value in its own <td> element
-                                      <td class="px-6 py-4 text-sm font-medium whitespace-nowrap text-neutral-600 dark:text-neutral-400">
-                                        {cellValue}
-                                      </td>
-                                    ))}
-                                  </tr>
-                                ))
-                              )}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : null
-            }
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="tabs-with-card-3" class="hidden" role="tabpanel">
-    <div class="mx-auto mb-20 flex w-full md:mb-28 2xl:w-4/5">
-      <div
-        class="relative top-12 left-12 z-10 overflow-hidden rounded-xl shadow-lg md:top-16 md:left-12 md:-ml-12 lg:ml-0"
-      >
-        {
-          product.data.blueprints.first && (
-            <Image
-              src={product.data.blueprints.first}
-              class="h-full w-full object-cover object-center"
-              alt="Blueprint Illustration"
-              format={'avif'}
-            />
-          )
-        }
-      </div>
-
-      <div class="relative right-12 overflow-hidden rounded-xl shadow-xl">
-        {
-          product.data.blueprints.second && (
-            <Image
-              src={product.data.blueprints.second}
-              class="h-full w-full object-cover object-center"
-              alt="Blueprint Illustration"
-              format={'avif'}
-            />
-          )
-        }
-      </div>
-    </div>
-  </div>
-</MainLayout>
-
-<script>
-  import { gsap } from 'gsap';
-
-  type AnimationSettings = {
-    autoAlpha?: number;
-    y?: number;
-    x?: number;
-    willChange?: string;
-  };
-
-  function setElementAnimationDefaults(
-    id: string,
-    settings: AnimationSettings
-  ) {
-    gsap.set(id, settings);
+  try {
+    const response = await fetch(`${import.meta.env.PUBLIC_API}/templates`);
+    if (response.ok) {
+      templates = await response.json();
+    }
+  } catch (error) {
+    console.error('Failed to load templates for static paths:', error);
   }
 
-  setElementAnimationDefaults('#fadeText', {
-    autoAlpha: 0,
-    y: 50,
-    willChange: 'transform, opacity',
-  });
+  return templates.map((template: { id: number }) => ({
+    params: {
+      id: String(template.id),
+    },
+  }));
+}
 
-  setElementAnimationDefaults('#fadeInUp', {
-    autoAlpha: 0,
-    y: 50,
-    willChange: 'transform, opacity',
-  });
+const { id } = Astro.params;
+let product = null;
 
-  setElementAnimationDefaults('#fadeInMoveRight', {
-    autoAlpha: 0,
-    x: 300,
-    willChange: 'transform, opacity',
-  });
+try {
+  const response = await fetch(`${import.meta.env.PUBLIC_API}/templates/${id}`);
+  if (response.ok) {
+    product = await response.json();
+    // console.log("product :", product)
+  } else {
+    console.error('Backend ne error diya:', response.status);
+  }
+} catch (error) {
+  console.error('Fetch fail ho gaya:', error);
+}
 
-  let timeline = gsap.timeline({ defaults: { overwrite: 'auto' } });
+const pageTitle = product?.name
+  ? `${product.name} | G K Enterprise`
+  : 'Product not found | G K Enterprise';
+---
 
-  timeline.to('#fadeText', {
-    duration: 1.5,
-    autoAlpha: 1,
-    y: 0,
-    delay: 1,
-    ease: 'power2.out',
-  });
+<Layout title={pageTitle}>
+  <main
+    class="min-h-screen px-4 pt-24 pb-12 dark:bg-neutral-800 dark:text-white"
+  >
+    <div class="mx-auto max-w-7xl">
+      <!-- <a
+        href="/"
+        class="group mb-8 inline-flex items-center gap-2 text-neutral-400 transition-colors hover:text-orange-500"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 transition-transform group-hover:-translate-x-1"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Back to Products
+      </a> -->
 
-  timeline.to(
-    '#fadeInUp',
-    { duration: 1.5, autoAlpha: 1, y: 0, ease: 'power2.out' },
-    '-=1.2'
-  );
+      {
+        product ? (
+          <div class="grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
+            <div class="group relative sticky top-[100px]">
+              <div class="absolute -inset-1 rounded-[2.5rem] bg-gradient-to-r from-orange-600 to-orange-400 opacity-25 blur transition duration-1000 group-hover:opacity-50" />
 
-  timeline.to(
-    '#fadeInMoveRight',
-    { duration: 1.5, autoAlpha: 1, x: 0, ease: 'power2.inOut' },
-    '-=1.4'
-  );
+              <div class="relative overflow-hidden rounded-[2rem] border border-white/10 bg-neutral-900 shadow-2xl">
+                <img
+                  src={product.image_url}
+                  alt={product.name}
+                  class="h-auto min-h-[500px] w-full object-cover"
+                />
 
-  timeline.to('#overlay', { duration: 1, autoAlpha: 0, delay: 0.2 });
-</script>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    function setButtonInactive(btn: any, activeButton: any) {
-      if (btn !== activeButton) {
-        btn.classList.remove(
-          'active',
-          'bg-neutral-100',
-          'hover:border-transparent',
-          'dark:bg-white/[.05]'
-        );
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              </div>
+            </div>
 
-        const tabId = btn.getAttribute('data-target');
-        if (tabId) {
-          const contentElement = document.querySelector(tabId);
-          if (contentElement) {
-            contentElement.classList.add('hidden');
-          }
-        }
+            <div class="space-y-8">
+              <div>
+                <span class="mb-4 inline-block rounded-full border border-orange-500/20 bg-orange-500/10 px-4 py-1 text-sm font-bold tracking-widest text-orange-500 uppercase">
+                  {product.category}
+                </span>
+                <h1 class="mb-4 text-5xl font-black tracking-tight md:text-6xl">
+                  {product.name}
+                </h1>
+                <div class="h-1 w-20 rounded-full bg-orange-500" />
+              </div>
 
-        changeHeadingStyle(
-          btn,
-          ['text-neutral-800', 'dark:text-neutral-200'],
-          ['text-orange-400', 'dark:text-orange-300']
-        );
+              <div class="space-y-6 rounded-3xl border border-black bg-gray-50 p-8 backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
+                <h3 class="text-xl font-bold">Description</h3>
+                <p class="text-lg leading-relaxed text-neutral-800 italic dark:text-neutral-400">
+                  {product.description}
+                </p>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div class="rounded-2xl border border-black bg-gray-50 p-6 dark:border-white/10 dark:bg-white/5">
+                  <p class="mb-1 text-xs font-bold tracking-widest text-neutral-500 uppercase">
+                    Quality
+                  </p>
+                  <p class="text-lg font-bold">Premium Grade</p>
+                </div>
+                <div class="rounded-2xl border border-black bg-gray-50 p-6 dark:border-white/10 dark:bg-white/5">
+                  <p class="mb-1 text-xs font-bold tracking-widest text-neutral-500 uppercase">
+                    Availability
+                  </p>
+                  <p class="text-lg font-bold text-green-400">In Stock</p>
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-4 pt-4 sm:flex-row">
+                <button class="flex-1 transform rounded-2xl bg-white py-5 font-black text-black shadow-xl shadow-white/5 transition-all duration-300 hover:scale-[1.02] hover:bg-orange-500 hover:text-white">
+                  Get Quote Now
+                </button>
+                {/* <button class="px-8 bg-white/5 border border-white/10 text-white font-bold py-5 rounded-2xl hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+              Share
+            </button> */}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div class="rounded-3xl border border-white/10 bg-neutral-900 p-12 text-center">
+            <h1 class="mb-4 text-4xl font-black text-white">
+              Product not found
+            </h1>
+            <p class="mb-6 text-neutral-400">
+              We could not find the product with ID <strong>{id}</strong>.
+              Please check the URL or return to the products page.
+            </p>
+            <a
+              href="/products"
+              class="inline-flex items-center justify-center rounded-full bg-orange-500 px-8 py-4 text-sm font-semibold text-white transition hover:bg-orange-400"
+            >
+              Back to Products
+            </a>
+          </div>
+        )
       }
-    }
-
-    function activateButton(button: any) {
-      button.classList.add(
-        'active',
-        'bg-neutral-100',
-        ',hover:border-transparent',
-        'dark:bg-white/[.05]'
-      );
-
-      const tabId = button.getAttribute('data-target');
-      if (tabId) {
-        const contentElementToShow = document.querySelector(tabId);
-        if (contentElementToShow) {
-          contentElementToShow.classList.remove('hidden');
-        }
-      }
-
-      changeHeadingStyle(
-        button,
-        ['text-orange-400', 'dark:text-orange-300'],
-        ['text-neutral-800', 'dark:text-neutral-200']
-      );
-    }
-
-    function changeHeadingStyle(
-      button: any,
-      addClasses: any,
-      removeClasses: any
-    ) {
-      let heading = button.querySelector('span');
-      if (heading) {
-        heading.classList.remove(...removeClasses);
-        heading.classList.add(...addClasses);
-      }
-    }
-
-    const tabButtons = document.querySelectorAll('[data-target]');
-
-    if (tabButtons.length > 0) {
-      changeHeadingStyle(
-        tabButtons[0],
-        ['text-orange-400', 'dark:text-orange-300'],
-        []
-      );
-    }
-
-    tabButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        tabButtons.forEach(btn => setButtonInactive(btn, button));
-        activateButton(button);
-      });
-    });
-  });
-</script>
+    </div>
+  </main>
+</Layout>
