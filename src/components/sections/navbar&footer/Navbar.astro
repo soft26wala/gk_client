@@ -5,7 +5,7 @@ import NavLink from '@components/ui/links/NavLink.astro';
 import Authentication from '../misc/Authentication.astro';
 import enStrings from '@utils/navigation.ts';
 import frStrings from '@utils/fr/navigation.ts';
-import BrandLogo from '@components/BrandLogo.astro';
+import brandLogo from '@images/new/gk.png?url';
 import LanguagePicker from '@components/ui/LanguagePicker.astro';   
 
 // Select the correct translation based on the page's lang prop:
@@ -32,8 +32,7 @@ const adminUrl = '/admin'
       >
 
         <!-- <BrandLogo class="h-auto w-24" /> -->
-         <img src="../../../../src/images/new/gk.png" class="h-auto w-32" alt="Brand Logo">
-    <!-- C:\myProject\work\G K Enterprise\src\images\new -->
+        <img src={brandLogo} class="h-auto w-32" alt="Brand Logo" />
       </a>
       
       {/* Collapse toggle for smaller screens */}
