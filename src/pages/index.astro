@@ -25,9 +25,9 @@ import im3 from '@images/inpic/inpic3.avif'
 import im4 from '@images/inpic/inpic4.avif'
 import im5 from '@images/inpic/inpic5.avif'
 import im6 from '@images/inpic/inpic6.avif'
-import { string } from 'astro:schema';
+import type { ImageMetadata } from 'astro';
 
-const avatarSrcs: Array<string> = [
+const avatarSrcs: ImageMetadata[]  = [
      im2,
      im3,
      im4,
