@@ -1,5 +1,4 @@
 ---
-// Import the necessary components
 import MainLayout from '@/layouts/MainLayout.astro';
 import HeroSection from '@components/sections/landing/HeroSection.astro';
 import HeroSectionAlt from '@components/sections/landing/HeroSectionAlt.astro';
@@ -11,22 +10,30 @@ import PricingSection from '@components/sections/pricing/PricingSection.astro';
 import FAQ from '@components/sections/misc/FAQ.astro';
 import AnnouncementBanner from '@components/ui/banners/AnnouncementBanner.astro';
 import heroImage from '@images/gkpic1.avif';
-// import heroImage from '@images/hero-image.avif';
 import faqs from '@data/faqs.json';
 import features from '@data/features.json';
 import pricing from '@data/pricing.json';
 import featureImage from '@images/midpic3.avif';
-// import featureImage from '@images/features-image.avif';
 import construction from '@images/construction-image.avif';
 import tools from '@images/automated-tools.avif';
 import dashboard from '@images/dashboard-image.avif';
 import { partnersData } from '@/data_files/constants';
+import Why from '@/components/sections/landing/Why.astro';
+import im1 from '@images/inpic/inpic1.avif'
+import im2 from '@images/inpic/inpic2.avif'
+import im3 from '@images/inpic/inpic3.avif'
+import im4 from '@images/inpic/inpic4.avif'
+import im5 from '@images/inpic/inpic5.avif'
+import im6 from '@images/inpic/inpic6.avif'
+import { string } from 'astro:schema';
 
 const avatarSrcs: Array<string> = [
-  'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80',
-  'https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80',
-  'https://images.unsplash.com/photo-1541101767792-f9b2b1c4f127?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&&auto=format&fit=facearea&facepad=3&w=300&h=300&q=80',
-  'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80',
+     im2,
+     im3,
+     im4,
+     im5,
+     im6,
+     im1,
 ];
 ---
 
@@ -38,21 +45,24 @@ const avatarSrcs: Array<string> = [
   /> -->
 
   <HeroSection
-    title=`Mechanical Splicing <span
+    title=`Manufacturer And Supplier Of Rebar Coupler <span
         class="text-yellow-500 dark:text-yellow-400">G k Enterprise</span>`
-    subTitle="Revolutionizing Hardware and Construction Solutions with Cutting-Edge Tools and Expert Services"
+    subTitle="GK Enterprise is a leading supplier of high-quality Rebar Couplers and value-added solutions for the construction industry. We provide reliable products and services for infrastructure, residential, commercial, and industrial projects.
+              The company is committed to delivering quality products with a strong focus on customer satisfaction, precision, and timely service. We have catered to various projects across India and have built a strong reputation in the market through quality standards and dependable support."
     primaryBtn="Start Exploring"
     primaryBtnURL="/products"
     secondaryBtn="Contact Sales Team"
     secondaryBtnURL="/contact"
     withReview={true}
     avatars={avatarSrcs}
-    rating=`<span class="font-bold">4.8</span> / 5`
+    rating=`<span class="font-bold">4.4</span> / 5`
     starCount={4}
-    reviews=`From Over <span class="font-bold">12.8k</span> Reviews`
+    reviews=`From Over <span class="font-bold">46</span> Reviews`
     src={heroImage}
     alt="Stack of ScrewFast product boxes containing assorted hardware tools"
   />
+  <Why />
+
 
   <ClientsSection
     title="Trusted by Industry Leaders"
@@ -102,6 +112,7 @@ const avatarSrcs: Array<string> = [
     ]}
   />
 
+
   <TestimonialsSection
     title="Fast-Track Your Projects"
     subTitle="At G k Enterprise, we ensure a swift start with instant account setup. Experience the speed of construction redefined."
@@ -118,7 +129,7 @@ const avatarSrcs: Array<string> = [
     ]}
     statistics={[
       {
-        count: '70k+',
+        count: '46+',
         description:
           'customers equipped — from DIY to major construction firms',
       },
@@ -148,4 +159,39 @@ const avatarSrcs: Array<string> = [
     subTitle="ScrewFast is an open-source template, meticulously crafted with Astro, Tailwind CSS, and Preline UI frameworks."
     url="https://github.com/mearashadowfax/ScrewFast"
   /> -->
+
+
+  <!-- WhatsApp Floating Button -->
+<a
+  href="https://wa.me/917859845464?text=Hello%20Vruddhi%20Couplers%2C%20I%20want%20more%20information."
+  target="_blank"
+  rel="noopener noreferrer"
+  class="group fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-full border border-green-400/20 bg-green-500 px-5 py-3 shadow-2xl transition duration-300 hover:scale-105 hover:bg-green-600"
+>
+  <!-- WhatsApp Icon -->
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 32 32"
+    class="h-7 w-7 dark:fill-white fill-black"
+  >
+    <path
+      d="M16.04 3C8.84 3 3 8.74 3 15.82c0 2.5.74 4.92 2.13 7L3 29l6.39-2.08a13.2 13.2 0 0 0 6.65 1.8H16c7.2 0 13.04-5.74 13.04-12.82C29.04 8.74 23.2 3 16.04 3Zm0 23.4c-2.04 0-4.03-.55-5.77-1.6l-.41-.24-3.79 1.23 1.24-3.68-.27-.43a10.4 10.4 0 0 1-1.6-5.56c0-5.8 4.78-10.52 10.66-10.52 5.89 0 10.67 4.72 10.67 10.52 0 5.8-4.78 10.52-10.67 10.52Zm5.85-7.86c-.32-.16-1.9-.93-2.2-1.04-.3-.1-.52-.16-.74.16-.21.31-.84 1.03-1.02 1.24-.19.21-.37.24-.69.08-.31-.16-1.33-.48-2.53-1.53-.93-.82-1.56-1.83-1.74-2.14-.18-.31-.02-.48.14-.64.14-.14.31-.37.47-.55.15-.18.2-.31.3-.52.1-.21.05-.39-.03-.55-.08-.16-.74-1.78-1.02-2.43-.26-.63-.52-.55-.74-.56h-.63c-.21 0-.55.08-.84.39-.29.31-1.1 1.08-1.1 2.64 0 1.55 1.13 3.05 1.29 3.26.16.21 2.22 3.52 5.49 4.8.78.3 1.39.48 1.86.62.78.24 1.49.2 2.05.12.63-.1 1.9-.78 2.17-1.53.27-.76.27-1.4.19-1.53-.08-.13-.29-.21-.61-.37Z"
+    />
+  </svg>
+
+  <!-- Text -->
+  <div class="hidden sm:block">
+    <p class="text-sm font-semibold dark:text-white text-black">
+      Chat on WhatsApp
+    </p>
+
+    <p class="gre">
+      Quick Support
+    </p>
+  </div>
+</a>
+
 </MainLayout>
+
+
+
