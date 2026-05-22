@@ -1,78 +1,106 @@
----
-// Import the necessary AccordionItem component and JSON data
-import AccordionItem from '@components/ui/blocks/AccordionItem.astro';
+<section class="relative overflow-hidden py-20">
+  
+  <!-- Background Glow -->
+  <div class="absolute top-0 left-0 h-72 w-72 rounded-full bg-lime-500/20 blur-3xl"></div>
+  <div class="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-orange-500/20 blur-3xl"></div>
 
-// Define props from Astro
-const { title, faqs } = Astro.props;
+  <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-// Define TypeScript interface for props
-interface Faq {
-  question: string;
-  answer: string;
-}
+    <!-- Header -->
+    <div class="mb-20 text-center">
+      <h2 class="text-5xl font-black tracking-tight dark:text-white md:text-6xl">
+        <span class="text-yellow-400">GK Enterprise</span>
+      </h2>
 
-interface FaqGroup {
-  subTitle?: string;
-  faqs: Faq[];
-}
+      <p class="mx-auto mt-6 max-w-3xl text-lg leading-8 dark:text-neutral-300 text-neutral-600 ">
+        Leading manufacturer and supplier of premium rebar couplers,
+        mechanical joint systems, and construction engineering solutions
+        trusted across India.
+      </p>
+    </div>
 
-interface Props {
-  title: string;
-  faqs: FaqGroup;
-}
-// Define a helper function to generate ids dynamically.
-const makeId = (base: any, index: any) => `${base}${index + 1}`;
----
+    <!-- Grid -->
+    <div class="grid gap-10 lg:grid-cols-3">
 
-{
-  /* Main container that holds all content. Customized for different viewport sizes. */
-}
-<section
-  class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full"
->
-  <div class="grid gap-10 md:grid-cols-5">
-    <div class="md:col-span-2">
-      <div class="max-w-xs">
-        <h2
-          class="text-2xl font-bold text-neutral-800 md:text-4xl md:leading-tight dark:text-neutral-200"
+      <!-- Mission -->
+      <div
+        class="group rounded-[2rem] border border-white/10 bg-white/5 p-10 backdrop-blur-xl transition-all duration-700 hover:-translate-y-3 hover:border-lime-400/40 hover:shadow-[0_20px_60px_rgba(132,204,22,0.18)]"
+      >
+        <div
+          class="mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-lime-500/20 text-5xl transition-all duration-500 group-hover:scale-110"
         >
-          <Fragment set:html={title} />
-        </h2>
-        <p class="mt-1 hidden text-neutral-600 md:block dark:text-neutral-400">
-          {faqs.subTitle}
+          🚀
+        </div>
+
+        <h3 class="mb-6 text-3xl font-bold dark:text-white">
+          Our Mission
+        </h3>
+
+        <p class="text-lg leading-9 dark:text-neutral-300 text-neutral-600 ">
+          Our mission is to provide innovative, durable, and high-quality
+          construction engineering products that enhance structural strength,
+          safety, and efficiency in modern infrastructure projects.
         </p>
       </div>
-    </div>
-    {/* FAQ accordion items */}
-    <div class="md:col-span-3">
-      <div
-        class="hs-accordion-group divide-y divide-neutral-200 dark:divide-neutral-700"
-      >
-        {
-          faqs.faqs.map((question, i) => {
-            {
-              /* Generate ids dynamically for each FAQ accordion item. */
-            }
-            let id = makeId(
-              'hs-basic-with-title-and-arrow-stretched-heading-',
-              i
-            );
-            let collapseId = makeId(
-              'hs-basic-with-title-and-arrow-stretched-collapse',
-              i
-            );
 
-            return (
-              <AccordionItem
-                {...question}
-                id={id}
-                collapseId={collapseId}
-                first={i === 0}
-              />
-            );
-          })
-        }
+      <!-- Vision -->
+      <div
+        class="group rounded-[2rem] border border-white/10 bg-white/5 p-10 backdrop-blur-xl transition-all duration-700 hover:-translate-y-3 hover:border-cyan-400/40 hover:shadow-[0_20px_60px_rgba(34,211,238,0.18)]"
+      >
+        <div
+          class="mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-cyan-500/20 text-5xl transition-all duration-500 group-hover:scale-110"
+        >
+          🌍
+        </div>
+
+        <h3 class="mb-6 text-3xl font-bold dark:text-white">
+          Our Vision
+        </h3>
+
+        <p class="text-lg leading-9 dark:text-neutral-300 text-neutral-600 ">
+          To become India's most trusted and advanced construction engineering
+          company by delivering world-class products, customer satisfaction,
+          and sustainable infrastructure solutions.
+        </p>
       </div>
+
+      <!-- Company -->
+      <div
+        class="group rounded-[2rem] border border-white/10 bg-white/5 p-10 backdrop-blur-xl transition-all duration-700 hover:-translate-y-3 hover:border-orange-400/40 hover:shadow-[0_20px_60px_rgba(249,115,22,0.18)]"
+      >
+        <div
+          class="mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-orange-500/20 text-5xl transition-all duration-500 group-hover:scale-110"
+        >
+          🏢
+        </div>
+
+        <h3 class="mb-6 text-3xl font-bold dark:text-white">
+          Company Details
+        </h3>
+
+        <div class="space-y-4 text-lg dark:text-neutral-300 text-neutral-600 ">
+          <p>
+            <span class="font-semibold dark:text-white">Company:</span>
+            GK Enterprise
+          </p>
+
+          <p>
+            <span class="font-semibold dark:text-white">Industry:</span>
+            Machine Screws, Assorted Screw Set, Tap Bolts and Nuts Set, Hex Bolts & Reducer Coupler Solutions
+          </p>
+
+          <p>
+            <span class="font-semibold dark:text-white">Services:</span>
+            Mechanical Joint Systems, Rebar Couplers
+          </p>
+
+          <p>
+            <span class="font-semibold dark:text-white">Location:</span>
+            Gujrat, India
+          </p>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
