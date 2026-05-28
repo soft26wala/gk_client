@@ -51,7 +51,7 @@ interface Props {
       /* Each h1 and p tag renders a portion of the title and subTitle defined above */
     }
     <h1
-      class="block text-3xl font-bold tracking-tight text-balance text-neutral-800 sm:text-4xl lg:text-6xl lg:leading-tight dark:text-neutral-200"
+      class="block text-3xl font-bold tracking-tight text-balance text-neutral-800 sm:text-4xl lg:text-6xl lg:leading-tight dark:text-neutral-200" data-aos="fade-right" data-aos-duration="1000"
     >
       {
         /* About Fragment: https://docs.astro.build/en/basics/astro-syntax/#fragments */
@@ -60,7 +60,7 @@ interface Props {
     </h1>
     {
       subTitle && (
-        <p class="mt-3 text-lg leading-relaxed text-pretty text-neutral-700 lg:w-4/5 dark:text-neutral-400">
+        <p class="mt-3 text-lg leading-relaxed text-pretty text-neutral-700 lg:w-4/5 dark:text-neutral-400" data-aos="fade-right" data-aos-duration="1000">
           {subTitle}
         </p>
       )
@@ -68,7 +68,7 @@ interface Props {
     {
       /* Action Button Section: This section includes two CTAs with their own styles and URL */
     }
-    <div class="mt-7 grid w-full gap-3 sm:inline-flex"> 
+    <div class="mt-7 grid w-full gap-3 sm:inline-flex" data-aos="fade-up" data-aos-duration="2000"> 
       {primaryBtn && <PrimaryCTA title={primaryBtn} url={primaryBtnURL} />}
       {
         secondaryBtn && (
@@ -87,6 +87,7 @@ interface Props {
           starCount={starCount}
           rating={rating}
           reviews={reviews}
+          // data-aos="fade-right" data-aos-duration="1000"
         />
       ) : (
         ''
@@ -106,6 +107,7 @@ interface Props {
             draggable={'false'}
             loading={'eager'}
             format={'avif'}
+            data-aos="fade-left" data-aos-duration="1000"
           />
         )
       }

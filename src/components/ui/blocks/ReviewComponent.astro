@@ -19,8 +19,8 @@ interface Props {
     <div class="text-center sm:flex sm:items-center sm:text-start">
       <div class="shrink-0 pb-5 sm:flex sm:pe-5 sm:pb-0">
         {/* Avatar Group */}
-        <div class="flex justify-center -space-x-3">
-          {avatars?.map(src => <Avatar src={src} alt="Avatar Description" />)}
+        <div class="flex justify-center -space-x-3" >
+          {avatars?.map(src => <Avatar src={src} alt="Avatar Description"  data-aos="fade-right" data-aos-duration="1000"/>)}
           <span
             class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-zinc-800 ring-2 ring-white dark:bg-zinc-900 dark:ring-zinc-800"
           >
