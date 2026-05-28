@@ -7,6 +7,8 @@ import frStrings from '@utils/fr/navigation.ts';
 import Icon from '@components/ui/icons/Icon.astro';
 import BrandLogo from '@components/BrandLogo.astro';
 import { SITE } from '@data/constants';
+import brandLogo from '@images/new/gk.png?url';
+
 
 // Select the correct translation based on the page's lang prop:
 const strings = Astro.currentLocale === 'fr' ? frStrings : enStrings;
@@ -30,7 +32,7 @@ const crafted: string =
       <div class="col-span-full lg:col-span-1">
         {/* Brand Logo */}
         <!-- <BrandLogo class="h-auto w-32" /> -->
-         <img src="../../../../src/images/new/gk.png" class="h-auto w-32" alt="Brand Logo">
+         <img src={brandLogo} class="h-auto w-32" alt="Brand Logo">
       </div>
       {/* An array of links for Product and Company sections */}
       {
