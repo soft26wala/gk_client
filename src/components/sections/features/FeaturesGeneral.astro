@@ -18,7 +18,7 @@ interface Props {
   alt?: string;
 }
 // Define props from Astro
-const { title, subTitle, src, alt, features } = Astro.props;
+const { title, subTitle,  features } = Astro.props;
 ---
 
 <section
@@ -26,7 +26,7 @@ const { title, subTitle, src, alt, features } = Astro.props;
 >
   {/* Block to display the feature image */}
   <div class="relative mb-6 overflow-hidden md:mb-8">
-    {
+    <!-- {
       src && alt && (
         <Image
           src={src}
@@ -38,7 +38,7 @@ const { title, subTitle, src, alt, features } = Astro.props;
           data-aos="zoom-out-up" data-aos-duration="1000"
         />
       )
-    }
+    } -->
   </div>
 
   {
@@ -50,13 +50,14 @@ const { title, subTitle, src, alt, features } = Astro.props;
       {/* Rendering title */}
       <h2
         class="text-2xl font-bold text-balance text-neutral-800 md:text-3xl dark:text-neutral-200"
+        data-aos="fade-up" data-aos-duration="1000"
       >
         {title}
       </h2>
       {/* Rendering subtitle */}
       {
         subTitle && (
-          <p class="mt-2 text-pretty text-neutral-600 md:mt-4 dark:text-neutral-400">
+          <p class="mt-2 text-pretty text-neutral-600 md:mt-4 dark:text-neutral-400" data-aos="fade-up" data-aos-duration="2000">
             {subTitle}
           </p>
         )
