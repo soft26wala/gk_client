@@ -5,7 +5,7 @@ import Navbar from '@components/sections/navbar&footer/Navbar.astro';
 import FooterSection from '@components/sections/navbar&footer/FooterSection.astro';
 import { SITE } from '@data/constants';
 import '@styles/global.css';
-import "aos/dist/aos.css";
+import 'aos/dist/aos.css';
 // Setting expected props
 const {
   title = SITE.title,
@@ -35,6 +35,11 @@ interface Props {
       structuredData={structuredData}
       customDescription={customDescription}
       customOgTitle={customOgTitle}
+    />
+
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; connect-src 'self' https://gk-api-t0fo.onrender.com;"
     />
     {/* Define the title of the page */}
     <title>{title}</title>
@@ -87,7 +92,9 @@ interface Props {
 
         const removeToast = () => {
           toast.classList.remove('visible');
-          toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+          toast.addEventListener('transitionend', () => toast.remove(), {
+            once: true,
+          });
         };
 
         setTimeout(removeToast, duration);
@@ -117,17 +124,16 @@ interface Props {
       }
     </style>
 
-
-<script>
-  // @ts-ignore: no declaration file for module 'aos'
-  import("aos").then((AOS) => {
-    AOS.default.init({
-      duration: 1000,
-      once: true,
-      offset: 80,
-      easing: "ease-out-cubic",
-    });
-  });
-</script>
+    <script>
+      // @ts-ignore: no declaration file for module 'aos'
+      import('aos').then(AOS => {
+        AOS.default.init({
+          duration: 1000,
+          once: true,
+          offset: 80,
+          easing: 'ease-out-cubic',
+        });
+      });
+    </script>
   </body>
 </html>
