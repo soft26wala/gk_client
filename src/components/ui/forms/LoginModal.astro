@@ -125,9 +125,13 @@ const config = {
         // Token ya session store karo
         if (data.token) {
           localStorage.setItem('token', data.token);
-          localStorage.setItem('user', JSON.stringify(data.user));
         }
-        if (data.role === 'admin') {
+
+        const user = data.user || { role: data.role || 'user' };
+        localStorage.setItem('user', JSON.stringify(user));
+
+        const isAdmin = typeof user.role === 'string' && user.role.toLowerCase() === 'admin';
+        if (isAdmin) {
           window.location.href = '/admin';
         } else {
           window.location.reload();

@@ -244,7 +244,8 @@ const adminUrl = '/admin'
       function showLoggedIn(u) {
         if (loginComp) loginComp.style.display = 'none';
         if (logoutBtn) logoutBtn.style.display = 'inline-flex';
-        if (adminLink) adminLink.style.display = u && u.role === 'Admin' ? 'inline-flex' : 'none';
+        const isAdmin = u && typeof u.role === 'string' && u.role.toLowerCase() === 'admin';
+        if (adminLink) adminLink.style.display = isAdmin ? 'inline-flex' : 'none';
       }
 
       function showLoggedOut() {
