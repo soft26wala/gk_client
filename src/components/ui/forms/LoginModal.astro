@@ -112,7 +112,7 @@ const config = {
     }
 
     try {
-      const apiBase = import.meta.env.PUBLIC_API || 'http://localhost:4000';
+      const apiBase = import.meta.env.PUBLIC_API || 'https://gk-api-t0fo.onrender.com';
       const response = await fetch(`${apiBase}/user/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
