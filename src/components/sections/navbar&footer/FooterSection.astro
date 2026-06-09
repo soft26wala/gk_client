@@ -5,7 +5,6 @@ import EmailFooterInput from '@components/ui/forms/input/EmailFooterInput.astro'
 import enStrings from '@utils/navigation.ts';
 import frStrings from '@utils/fr/navigation.ts';
 import Icon from '@components/ui/icons/Icon.astro';
-import BrandLogo from '@components/BrandLogo.astro';
 import { SITE } from '@data/constants';
 import brandLogo from '@images/new/gk.png?url';
 
@@ -50,11 +49,7 @@ const crafted: string =
                   >
                     {link.name}
                   </a>
-                  {section.section === 'Company' && index === 2 ? (
-                    <span class="ms-1 inline rounded-lg bg-orange-500 px-2 py-1 text-xs font-bold text-neutral-50">
-                      We're hiring!
-                    </span>
-                  ) : null}
+                 
                 </li>
               ))}
             </ul>

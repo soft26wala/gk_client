@@ -4,7 +4,9 @@ const navBarLinks = [
   { name: 'Products', url: '/products' },
   { name: 'About us', url: '/aboutus' },
   { name: 'Blog', url: '/blog' },
-  { name: 'Contact', url: '/contact' },
+  { name: 'Contact Us', url: '/contact' },
+  { name: ' FAQ', url: '#' },
+  { name: ' Careers', url: '#' },
 ];
 // An array of links for footer
 const footerLinks = [
@@ -20,9 +22,9 @@ const footerLinks = [
     section: 'Company',
     links: [
       { name: 'About us', url: '/aboutus' },
-      { name: 'Blog', url: '/blog' },
+      { name: 'Contact', url: '/contact' },
+      { name: 'Download Brochure', url: '#' },
       { name: 'Careers', url: '#' },
-      { name: 'Customers', url: '#' },
     ],
   },
 ];
