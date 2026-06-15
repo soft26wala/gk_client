@@ -84,7 +84,7 @@ try {
       class="flex gap-6 overflow-x-auto scroll-smooth pb-2 snap-x snap-mandatory [-ms-overflow-style:none] [scrollbar-width:none]"
     >
       {
-        templates.map((template : { id: number; image: string; name: string; category: string; description: string }) => (
+        templates.map((template : { id: number; image_url: string; name: string; category: string; description: string }) => (
           <a
             href={`/products/${template.id}`}
             class="min-w-[85%] sm:min-w-[48%] lg:min-w-[31%] xl:min-w-[24%] snap-start"
@@ -96,7 +96,7 @@ try {
               <!-- IMAGE -->
               <div class="relative overflow-hidden">
                 <img
-                  src={template.image}
+                  src={template.image_url}
                   alt={template.name}
                   class="h-60 w-full object-cover transition duration-700 group-hover:scale-110"
                 />
