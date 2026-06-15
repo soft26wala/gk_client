@@ -5,7 +5,7 @@ const navBarLinks = [
   { name: 'About us', url: '/aboutus' },
   // { name: 'Blog', url: '/blog' },
   { name: 'Contact Us', url: '/contact' },
-  { name: ' FAQ', url: '#' },
+  { name: ' FAQ', url: '/faq' },
   // { name: ' Careers', url: '#' },
 ];
 // An array of links for footer
