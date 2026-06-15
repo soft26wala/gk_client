@@ -1,0 +1,59 @@
+---
+import AccordionItem from '@components/ui/blocks/AccordionItem.astro';
+
+const { title = 'Frequently Asked Questions', faqs } = Astro.props;
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+interface FAQData {
+  subTitle?: string;
+  faqs?: FAQItem[];
+}
+
+interface Props {
+  title?: string;
+  faqs: FAQData | FAQItem[];
+}
+
+const faqItems = Array.isArray(faqs) ? faqs : faqs?.faqs ?? [];
+const subTitle = Array.isArray(faqs) ? null : faqs?.subTitle;
+---
+
+<section
+  class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-14 2xl:max-w-full"
+>
+  <div class="grid gap-10 md:grid-cols-5">
+    <div class="md:col-span-2">
+      <h2
+        class="text-3xl font-bold tracking-tight text-balance text-neutral-800 md:text-4xl dark:text-neutral-200"
+        set:html={title}
+      />
+      {
+        subTitle && (
+          <p class="mt-4 text-pretty text-neutral-600 dark:text-neutral-400">
+            {subTitle}
+          </p>
+        )
+      }
+    </div>
+
+    <div class="md:col-span-3">
+      <div class="hs-accordion-group divide-y divide-neutral-200 dark:divide-neutral-700">
+        {
+          faqItems.map((item, index) => (
+            <AccordionItem
+              id={`faq-${index + 1}`}
+              collapseId={`faq-collapse-${index + 1}`}
+              question={item.question}
+              answer={item.answer}
+              first={index === 0}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
