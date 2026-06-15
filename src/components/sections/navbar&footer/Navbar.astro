@@ -235,17 +235,21 @@ const adminUrl = '/admin'
 <script is:inline>
   (function () {
     try {
+      const token = localStorage.getItem('token');
       const userJSON = localStorage.getItem('user');
       const user = userJSON ? JSON.parse(userJSON) : null;
       const loginComp = document.getElementById('login-component');
       const logoutBtn = document.getElementById('logout-btn');
       const adminLink = document.getElementById('admin-link');
 
+      function isAdmin(u) {
+        return typeof u?.role === 'string' && u.role.toLowerCase() === 'admin';
+      }
+
       function showLoggedIn(u) {
         if (loginComp) loginComp.style.display = 'none';
         if (logoutBtn) logoutBtn.style.display = 'inline-flex';
-        const isAdmin = u && typeof u.role === 'string' && u.role.toLowerCase() === 'admin';
-        if (adminLink) adminLink.style.display = isAdmin ? 'inline-flex' : 'none';
+        if (adminLink) adminLink.style.display = isAdmin(u) ? 'inline-flex' : 'none';
       }
 
       function showLoggedOut() {
@@ -254,15 +258,18 @@ const adminUrl = '/admin'
         if (adminLink) adminLink.style.display = 'none';
       }
 
-      if (user) {
+      if (token && user) {
         showLoggedIn(user);
       } else {
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
         showLoggedOut();
       }
 
       if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
           localStorage.removeItem('user');
+          localStorage.removeItem('token');
           // optionally redirect to login or homepage
           location.reload();
         });

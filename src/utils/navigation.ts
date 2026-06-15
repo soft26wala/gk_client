@@ -3,19 +3,18 @@ const navBarLinks = [
   { name: 'Home', url: '/' },
   { name: 'Products', url: '/products' },
   { name: 'About us', url: '/aboutus' },
-  { name: 'Blog', url: '/blog' },
+  // { name: 'Blog', url: '/blog' },
   { name: 'Contact Us', url: '/contact' },
   { name: ' FAQ', url: '#' },
-  { name: ' Careers', url: '#' },
+  // { name: ' Careers', url: '#' },
 ];
 // An array of links for footer
 const footerLinks = [
   {
     section: 'Ecosystem',
     links: [
-      { name: 'Documentation', url: '/welcome-to-docs/' },
-      { name: 'Tools & Equipment', url: '/products' },
-      { name: 'Construction Services', url: '/services' },
+      { name: 'Home', url: '/' },
+      { name: 'Products', url: '/products' },
     ],
   },
   {
@@ -24,7 +23,7 @@ const footerLinks = [
       { name: 'About us', url: '/aboutus' },
       { name: 'Contact', url: '/contact' },
       { name: 'Download Brochure', url: '#' },
-      { name: 'Careers', url: '#' },
+      // { name: 'Careers', url: '#' },
     ],
   },
 ];
