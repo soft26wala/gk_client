@@ -84,6 +84,13 @@ try {
                 <p class="text-xs text-neutral-500">PNG, JPG up to 10MB</p>
               </div>
             </div>
+            <div id="upload-preview-wrap" class="hidden items-center gap-4 p-4 bg-white/[0.02] rounded-2xl border border-white/5">
+              <img id="upload-preview" src="" alt="Selected template preview" class="w-28 h-20 object-cover rounded-xl border border-white/10" />
+              <div class="min-w-0">
+                <p class="text-xs text-neutral-500 uppercase font-bold tracking-widest">Image Preview</p>
+                <p id="upload-preview-name" class="truncate text-sm text-neutral-300"></p>
+              </div>
+            </div>
 
             <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 text-white font-black py-4 rounded-2xl transition-all shadow-xl shadow-orange-500/20 uppercase tracking-widest">
               Publish Template
@@ -323,6 +330,35 @@ const modal = document.getElementById('editModal');
 
 
   const form = document.querySelector<HTMLFormElement>('#uploadForm');
+  const fileInput = document.querySelector<HTMLInputElement>('#file-input');
+  const uploadPreviewWrap = document.querySelector<HTMLDivElement>('#upload-preview-wrap');
+  const uploadPreview = document.querySelector<HTMLImageElement>('#upload-preview');
+  const uploadPreviewName = document.querySelector<HTMLParagraphElement>('#upload-preview-name');
+  let uploadPreviewUrl = '';
+
+  const clearUploadPreview = () => {
+    if (uploadPreviewUrl) {
+      URL.revokeObjectURL(uploadPreviewUrl);
+      uploadPreviewUrl = '';
+    }
+    if (uploadPreview) uploadPreview.src = '';
+    if (uploadPreviewName) uploadPreviewName.textContent = '';
+    uploadPreviewWrap?.classList.add('hidden');
+    uploadPreviewWrap?.classList.remove('flex');
+  };
+
+  fileInput?.addEventListener('change', () => {
+    const file = fileInput.files?.[0];
+    clearUploadPreview();
+
+    if (!file || !file.type.startsWith('image/')) return;
+
+    uploadPreviewUrl = URL.createObjectURL(file);
+    if (uploadPreview) uploadPreview.src = uploadPreviewUrl;
+    if (uploadPreviewName) uploadPreviewName.textContent = file.name;
+    uploadPreviewWrap?.classList.remove('hidden');
+    uploadPreviewWrap?.classList.add('flex');
+  });
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -348,6 +384,7 @@ const modal = document.getElementById('editModal');
         const result = await response.json();
         window.showToast("Success! Template Published.", 'success');
         currentForm.reset();
+        clearUploadPreview();
         window.location.reload();
       } else {
         const errorData = await response.json();
