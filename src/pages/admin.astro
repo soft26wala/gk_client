@@ -1,26 +1,16 @@
 ---
 import type { describe } from 'astro:schema';
 import AdminLayout from '../layouts/AdminLayout.astro';
+const apiBase = import.meta.env.PUBLIC_API || 'https://gk-api-t0fo.onrender.com';
 // Simulando datos que vendrían de tu base de datos Postgres
 let users = [];
 try {
-  const response = await fetch(`${import.meta.env.PUBLIC_API}/user/all`);
+  const response = await fetch(`${apiBase}/user/all`);
   users = await response.json();
   // console.log("user :", await users)
 } catch (e) {
   // Agar backend off hai to ye dikhega
   users = [{ name: "Database Offline", email: "check backend", date: "-" }];
-}
-
-
-let temp = [];
-try {
-  const response = await fetch(`${import.meta.env.PUBLIC_API}/templates/all`);
-  temp = await response.json();
-  // console.log("temp :", await temp)
-} catch (e) {
-  // Agar backend off hai to ye dikhega
-  temp = [{ name: "Database Offline", describe: "check backend", date: "-" }];
 }
 ---
 
@@ -101,37 +91,22 @@ try {
         <section class="bg-neutral-900/50 border border-white/10 rounded-[2rem] overflow-hidden">
           <div class="p-6 border-b border-white/10 flex justify-between items-center">
             <h2 class="text-xl font-bold">Your Templates</h2>
-            <span class="text-xs text-neutral-500">{temp.length} Total</span>
+            <span id="templates-total" class="text-xs text-neutral-500">Loading...</span>
           </div>
           <div class="overflow-x-auto">
-            <table class="w-full text-left">
+            <table class="w-full text-left" data-api-base={apiBase}>
               <thead class="bg-white/5 text-neutral-400 text-xs uppercase tracking-tighter">
                 <tr>
                   <th class="px-6 py-4">name</th>
                   <th class="px-6 py-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-white/5">
-                {temp.map((template: any) => (
-                  <tr class="hover:bg-white/[0.02] transition-colors">
-                    <td class="px-6 py-4">
-                      <div class="font-bold text-white">{template.name}</div>
-                    </td>
-                    <td class="px-6 py-4 text-sm text-neutral-400">{template.date}</td>
-                    <td class="px-6 py-4 text-right">
-                      <button 
-                        class="edit-btn bg-orange-500/10 text-orange-400 text-[10px] font-bold px-3 py-2 rounded-md uppercase hover:bg-orange-500 hover:text-white transition-all cursor-pointer"
-                        data-id={template.id}
-                        data-name={template.name}
-                        data-category={template.category}
-                        data-description={template.description}
-                        data-image={template.image}
-                      >
-                        Edit
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+              <tbody id="templates-tbody" class="divide-y divide-white/5">
+                <tr>
+                  <td class="px-6 py-6 text-sm text-neutral-500" colspan="3">
+                    Loading templates...
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -262,26 +237,123 @@ try {
 const modal = document.getElementById('editModal');
   const editForm = document.querySelector<HTMLFormElement>('#editForm');
   const closeModalBtn = document.getElementById('closeModal');
+  const templatesTable = document.querySelector<HTMLTableElement>('table[data-api-base]');
+  const templatesTbody = document.querySelector<HTMLTableSectionElement>('#templates-tbody');
+  const templatesTotal = document.querySelector<HTMLSpanElement>('#templates-total');
+  const apiBase = templatesTable?.dataset.apiBase || 'https://gk-api-t0fo.onrender.com';
+
+  type Template = {
+    id?: number | string;
+    name?: string;
+    category?: string;
+    description?: string;
+    date?: string;
+    image?: string;
+    image_url?: string;
+    imageUrl?: string;
+  };
+
+  const escapeHtml = (value: unknown) =>
+    String(value ?? '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#039;');
+
+  const getTemplateImage = (template: Template) =>
+    template.image_url || template.image || template.imageUrl || '';
+
+  const renderTemplateRow = (template: Template) => `
+    <tr class="hover:bg-white/[0.02] transition-colors">
+      <td class="px-6 py-4">
+        <div class="font-bold text-white">${escapeHtml(template.name || 'Untitled')}</div>
+      </td>
+      <td class="px-6 py-4 text-sm text-neutral-400">${escapeHtml(template.date || '-')}</td>
+      <td class="px-6 py-4 text-right">
+        <button
+          class="edit-btn bg-orange-500/10 text-orange-400 text-[10px] font-bold px-3 py-2 rounded-md uppercase hover:bg-orange-500 hover:text-white transition-all cursor-pointer"
+          data-id="${escapeHtml(template.id)}"
+          data-name="${escapeHtml(template.name)}"
+          data-category="${escapeHtml(template.category)}"
+          data-description="${escapeHtml(template.description)}"
+          data-image="${escapeHtml(getTemplateImage(template))}"
+        >
+          Edit
+        </button>
+      </td>
+    </tr>
+  `;
+
+  const loadTemplates = async () => {
+    if (!templatesTbody) return;
+
+    templatesTbody.innerHTML = `
+      <tr>
+        <td class="px-6 py-6 text-sm text-neutral-500" colspan="3">
+          Loading templates...
+        </td>
+      </tr>
+    `;
+    if (templatesTotal) templatesTotal.textContent = 'Loading...';
+
+    try {
+      const response = await fetch(`${apiBase}/templates/all`, {
+        cache: 'no-store',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Templates request failed: ${response.status}`);
+      }
+
+      const templates = (await response.json()) as Template[];
+
+      if (!Array.isArray(templates) || templates.length === 0) {
+        templatesTbody.innerHTML = `
+          <tr>
+            <td class="px-6 py-6 text-sm text-neutral-500" colspan="3">
+              No templates found.
+            </td>
+          </tr>
+        `;
+        if (templatesTotal) templatesTotal.textContent = '0 Total';
+        return;
+      }
+
+      templatesTbody.innerHTML = templates.map(renderTemplateRow).join('');
+      if (templatesTotal) templatesTotal.textContent = `${templates.length} Total`;
+    } catch (err) {
+      console.error(err);
+      templatesTbody.innerHTML = `
+        <tr>
+          <td class="px-6 py-6 text-sm text-red-400" colspan="3">
+            Templates could not be loaded.
+          </td>
+        </tr>
+      `;
+      if (templatesTotal) templatesTotal.textContent = 'Error';
+    }
+  };
 
   // 1. Edit buttons par click listener lagana (data-* attributes se data lena)
-  document.querySelectorAll('.edit-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
+  templatesTbody?.addEventListener('click', (event) => {
+      const btn = (event.target as HTMLElement).closest<HTMLButtonElement>('.edit-btn');
+      if (!btn) return;
+
       const editId = document.getElementById('edit-id') as HTMLInputElement | null;
       const editName = document.getElementById('edit-name') as HTMLInputElement | null;
       const editCategory = document.getElementById('edit-category') as HTMLInputElement | null;
       const editDescription = document.getElementById('edit-description') as HTMLTextAreaElement | null;
       const editPreview = document.getElementById('edit-preview') as HTMLImageElement | null;
 
-      const b = btn as HTMLButtonElement;
-      if (editId) editId.value = b.dataset.id ?? '';
-      if (editName) editName.value = b.dataset.name ?? '';
-      if (editCategory) editCategory.value = b.dataset.category ?? '';
-      if (editDescription) editDescription.value = b.dataset.description ?? '';
-      if (editPreview) editPreview.src = b.dataset.image ?? ''; // Purani image dikhana
+      if (editId) editId.value = btn.dataset.id ?? '';
+      if (editName) editName.value = btn.dataset.name ?? '';
+      if (editCategory) editCategory.value = btn.dataset.category ?? '';
+      if (editDescription) editDescription.value = btn.dataset.description ?? '';
+      if (editPreview) editPreview.src = btn.dataset.image ?? ''; // Purani image dikhana
 
       modal?.classList.remove('hidden');
       modal?.classList.add('flex');
-    });
   });
 
   // 2. Popup band karna
@@ -307,7 +379,6 @@ const modal = document.getElementById('editModal');
     btn.disabled = true;
 
     try {
-      const apiBase = import.meta.env.PUBLIC_API || 'https://gk-api-t0fo.onrender.com';
       const response = await fetch(`${apiBase}/templates/${id}`, {
         method: 'PUT',
         body: formData,
@@ -315,7 +386,9 @@ const modal = document.getElementById('editModal');
 
       if (response.ok) {
         window.showToast("Template Updated Successfully!", 'success');
-        window.location.reload();
+        modal?.classList.add('hidden');
+        modal?.classList.remove('flex');
+        await loadTemplates();
       } else {
         window.showToast("Update Failed!", 'error');
       }
@@ -374,18 +447,17 @@ const modal = document.getElementById('editModal');
     const formData = new FormData(currentForm);
 
     try {
-      const apiBase = import.meta.env.PUBLIC_API || 'https://gk-api-t0fo.onrender.com';
       const response = await fetch(`${apiBase}/templates`, {
         method: 'POST',
         body: formData,
       });
 
       if (response.ok) {
-        const result = await response.json();
+        await response.json();
         window.showToast("Success! Template Published.", 'success');
         currentForm.reset();
         clearUploadPreview();
-        window.location.reload();
+        await loadTemplates();
       } else {
         const errorData = await response.json();
         window.showToast("Error: " + errorData.error, 'error');
@@ -398,5 +470,7 @@ const modal = document.getElementById('editModal');
       btn.disabled = false;
     }
   });
+
+  loadTemplates();
 </script>
 </AdminLayout>
