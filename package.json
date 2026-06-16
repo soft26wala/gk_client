@@ -20,7 +20,7 @@
     "@astrojs/vercel": "^10.0.8",
     "@tailwindcss/vite": "^4.2.4",
     "aos": "^2.3.4",
-    "astro": "^6.2.1",
+    "astro": "^6.4.7",
     "clipboard": "^2.0.11",
     "dotenv": "^17.4.2",
     "globby": "^16.2.0",
