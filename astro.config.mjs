@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import starlight from '@astrojs/starlight';
-import vercel from '@astrojs/vercel/serverless';
+import vercel from '@astrojs/vercel';
 import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
@@ -22,7 +22,7 @@ export default defineConfig({
   //     prefixDefaultLocale: false,
   //   },
   // },
-  output: 'hybrid',
+  output: 'server',
   prefetch: true,
   integrations: [
     sitemap({
