@@ -38,24 +38,16 @@ const config = {
             >
               {config.title}
             </div>
-            <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
-              {config.subTitle}
-              <button
-                class="rounded-lg p-1 font-medium text-orange-400 decoration-2 ring-zinc-500 outline-hidden hover:underline focus-visible:ring-3 dark:text-orange-400 dark:ring-zinc-200 dark:focus:outline-hidden"
-                data-hs-overlay={config.registerBtnDataHS}
-              >
-                {config.registerBtn}
-              </button>
-            </p>
+           
           </div>
-          <div class="mt-5">
+          <!-- <div class="mt-5">
             <GoogleBtn title="Sign in with Google" />
 
             <div
               class="flex items-center py-3 text-xs text-neutral-400 uppercase before:me-6 before:flex-[1_1_0%] before:border-t before:border-neutral-200 after:ms-6 after:flex-[1_1_0%] after:border-t after:border-neutral-200 dark:text-neutral-500 dark:before:border-neutral-600 dark:after:border-neutral-600"
             >
               Or
-            </div>
+            </div> -->
             {/* The container for the form */}
             <form id="loginForm" novalidate>
               {/* A grid layout for the form fields */}
@@ -64,7 +56,6 @@ const config = {
                 <EmailInput id="login-email" errorId="login-email-error" />
                 {/* The password input field */}
                 <PasswordInput
-                  forgot={true}
                   id="login-password"
                   errorId="login-password-error"
                   content="8+ characters required"
@@ -74,6 +65,15 @@ const config = {
                 {/* Error message display */}
                 <p id="login-error-msg" class="hidden text-sm text-red-500 text-center font-medium"></p>
                 {/* The sign-in button */}
+                 <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
+              {config.subTitle}
+              <button
+                class="rounded-lg p-1 font-medium text-orange-400 decoration-2 ring-zinc-500 outline-hidden hover:underline focus-visible:ring-3 dark:text-orange-400 dark:ring-zinc-200 dark:focus:outline-hidden"
+                data-hs-overlay={config.registerBtnDataHS}
+              >
+                {config.registerBtn}
+              </button>
+            </p>
                 <AuthBtn title="Sign in" />
               </div>
             </form>

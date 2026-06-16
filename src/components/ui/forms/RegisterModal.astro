@@ -11,7 +11,7 @@ const config = {
   id: 'hs-toggle-between-modals-register-modal', // Modal identifier
   title: 'Sign up', // Main heading
   subTitle: 'Already have an account?', // Sub-heading text
-  loginBtn: 'Sign in here', // Text for login button
+  loginBtn: 'Login in here', // Text for login button
   loginBtnDataHS: '#hs-toggle-between-modals-login-modal', // Target link for login button
 };
 ---
@@ -39,36 +39,23 @@ const config = {
             >
               {config.title}
             </div>
-            <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
-              {config.subTitle}
-              {/* Button to toggle login modal */}
-              <button
-                class="rounded-lg p-1 font-medium text-orange-400 decoration-2 ring-zinc-500 outline-hidden hover:underline focus-visible:ring-3 dark:text-orange-400 dark:ring-zinc-200 dark:focus:outline-hidden"
-                data-hs-overlay={config.loginBtnDataHS}
-              >
-                {config.loginBtn}
-              </button>
-            </p>
+           
           </div>
           {/* The form for user registration */}
           <div class="mt-5">
             {/* Google signup button */}
-            <GoogleBtn title="Sign up with Google" />
+            <!-- <GoogleBtn title="Sign up with Google" />
             {/* Dividing line with 'Or' text */}
             <div
               class="flex items-center py-3 text-xs text-neutral-400 uppercase before:me-6 before:flex-[1_1_0%] before:border-t before:border-neutral-200 after:ms-6 after:flex-[1_1_0%] after:border-t after:border-neutral-200 dark:text-neutral-500 dark:before:border-neutral-600 dark:after:border-neutral-600"
             >
               Or
-            </div>
+            </div> -->
             {/* Registration form */}
-            <form  id="signupForm">
+            <form id="signupForm">
               <div class="grid gap-y-4">
                 {/* Email input field */}
-                <TextInput
-                  id="register-name"
-                  name="name"
-                  label="Name"
-                  />
+                <TextInput id="register-name" name="name" label="Name" />
 
                 <EmailInput
                   id="register-email"
@@ -91,19 +78,31 @@ const config = {
                   /* Checkbox with a label and a link for accepting the terms and conditions */
                 }
                 <div class="relative z-10">
-  <Checkbox id="terms-agree">
-    <span class="text-sm text-neutral-600 dark:text-neutral-400">
-      I accept the 
-      <a
-        class="inline-block cursor-pointer font-medium text-orange-400 decoration-2 hover:underline focus:outline-hidden"
-        href="/terms"
-        target="_blank"
-      >
-        Terms and Conditions
-      </a>
-    </span>
-  </Checkbox>
-</div>
+                  <Checkbox id="terms-agree">
+                    <span
+                      class="text-sm text-neutral-600 dark:text-neutral-400"
+                    >
+                      I accept the
+                      <a
+                        class="inline-block cursor-pointer font-medium text-orange-400 decoration-2 hover:underline focus:outline-hidden"
+                        href="/terms"
+                        target="_blank"
+                      >
+                        Terms and Conditions
+                      </a>
+                    </span>
+                  </Checkbox>
+                </div>
+                 <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
+              {config.subTitle}
+              {/* Button to toggle login modal */}
+              <button
+                class="rounded-lg p-1 font-medium text-orange-400 decoration-2 ring-zinc-500 outline-hidden hover:underline focus-visible:ring-3 dark:text-orange-400 dark:ring-zinc-200 dark:focus:outline-hidden"
+                data-hs-overlay={config.loginBtnDataHS}
+              >
+                {config.loginBtn}
+              </button>
+            </p>
                 {/* Submit button for the registration form */}
                 <AuthBtn title="Sign up" />
               </div>
@@ -115,65 +114,80 @@ const config = {
   </div>
 </div>
 
-
 <script>
-  const form = document.getElementById("signupForm") as HTMLFormElement;
+  const form = document.getElementById('signupForm') as HTMLFormElement;
 
-  form?.addEventListener("submit", async (e) => {
+  form?.addEventListener('submit', async e => {
     e.preventDefault();
 
     // Select elements
-    const nameInput = document.getElementById("register-name") as HTMLInputElement;
-    const emailInput = document.getElementById("register-email") as HTMLInputElement;
-    const passwordInput = document.getElementById("create-password") as HTMLInputElement;
-    const confirmPasswordInput = document.getElementById("confirm-password") as HTMLInputElement;
-    const termsCheckbox = document.getElementById("terms-agree") as HTMLInputElement;
+    const nameInput = document.getElementById(
+      'register-name'
+    ) as HTMLInputElement;
+    const emailInput = document.getElementById(
+      'register-email'
+    ) as HTMLInputElement;
+    const passwordInput = document.getElementById(
+      'create-password'
+    ) as HTMLInputElement;
+    const confirmPasswordInput = document.getElementById(
+      'confirm-password'
+    ) as HTMLInputElement;
+    const termsCheckbox = document.getElementById(
+      'terms-agree'
+    ) as HTMLInputElement;
 
     // 1. Basic Validation
     if (passwordInput.value !== confirmPasswordInput.value) {
-      window.showToast("Passwords do not match!", 'error');
+      window.showToast('Passwords do not match!', 'error');
       return;
     }
 
     if (!termsCheckbox.checked) {
-      window.showToast("Please accept the Terms and Conditions.", 'error');
+      window.showToast('Please accept the Terms and Conditions.', 'error');
       return;
     }
 
     try {
       // 2. Disable button to prevent spam
-      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const submitBtn = form.querySelector(
+        'button[type="submit"]'
+      ) as HTMLButtonElement;
       if (submitBtn) submitBtn.disabled = true;
 
-      const res = await fetch("https://gk-api-t0fo.onrender.com/user/signup-manual", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: nameInput.value,
-          email: emailInput.value,
-          password: passwordInput.value,
-        }),
-      });
+      const res = await fetch(
+        'https://gk-api-t0fo.onrender.com/user/signup-manual',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: nameInput.value,
+            email: emailInput.value,
+            password: passwordInput.value,
+          }),
+        }
+      );
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || "Signup failed");
+        throw new Error(data.message || 'Signup failed');
       }
 
       // 3. Handle Success
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      
-      window.showToast("Signup Success!", 'success');
-      window.location.href = "/";
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
 
+      window.showToast('Signup Success!', 'success');
+      window.location.href = '/';
     } catch (err: any) {
       console.error(err);
-      window.showToast(err.message || "Server Error", 'error');
+      window.showToast(err.message || 'Server Error', 'error');
     } finally {
       // Re-enable button
-      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const submitBtn = form.querySelector(
+        'button[type="submit"]'
+      ) as HTMLButtonElement;
       if (submitBtn) submitBtn.disabled = false;
     }
   });
