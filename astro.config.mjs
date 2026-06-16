@@ -8,7 +8,7 @@ import mdx from '@astrojs/mdx';
 // https://astro.build/config
 export default defineConfig({
   // https://docs.astro.build/en/guides/images/#authorizing-remote-images
-  site: 'https://screwfast.uk',
+  site: 'https://gk.uk',
   image: {
     domains: ['images.unsplash.com'],
   },
@@ -22,7 +22,7 @@ export default defineConfig({
   //     prefixDefaultLocale: false,
   //   },
   // },
-  output: 'static',
+  output: 'server',
   prefetch: true,
   integrations: [
     sitemap({
@@ -119,9 +119,7 @@ export default defineConfig({
     }),
     mdx(),
   ],
-  experimental: {
-    clientPrerender: true,
-  },
+
   vite: {
     plugins: [tailwindcss()],
   },
