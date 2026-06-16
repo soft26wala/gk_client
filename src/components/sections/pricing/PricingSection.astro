@@ -75,7 +75,7 @@ const apiBase = import.meta.env.PUBLIC_API || 'https://gk-api-t0fo.onrender.com'
       {
         Array.from({ length: 4 }).map(() => (
           <div class="min-w-[85%] snap-start sm:min-w-[48%] lg:min-w-[31%] xl:min-w-[24%]">
-            <div class="overflow-hidden rounded-3xl border border-neutral-200/20 bg-white/70 shadow-xl backdrop-blur-2xl dark:border-white/10 dark:bg-white/5">
+            <div class="overflow-hidden rounded-3xl border border-neutral-200/20 bg-white/70 shadow-xl backdrop-blur-2xl dark:border-white/10 dark:bg-neutral-900/30">
               <div class="h-60 animate-pulse bg-neutral-100 dark:bg-white/10" />
               <div class="space-y-4 p-5">
                 <div class="h-6 w-2/3 animate-pulse rounded bg-neutral-200 dark:bg-white/10" />
@@ -133,10 +133,10 @@ const apiBase = import.meta.env.PUBLIC_API || 'https://gk-api-t0fo.onrender.com'
 
     return `
       <a
-        href="/products/${id}"
+        href="${location.origin}/products/${id}"
         class="min-w-[85%] sm:min-w-[48%] lg:min-w-[31%] xl:min-w-[24%] snap-start"
       >
-        <div class="group overflow-hidden rounded-3xl border border-neutral-200/20 bg-white/70 shadow-xl backdrop-blur-2xl transition duration-500 hover:-translate-y-2 hover:shadow-2xl dark:border-white/10 dark:bg-white/5">
+        <div class="group overflow-hidden rounded-3xl border border-neutral-200/20 bg-white/70 shadow-xl backdrop-blur-2xl transition duration-500 hover:-translate-y-2 hover:shadow-2xl dark:border-white/10 dark:bg-neutral-900/30">
           <div class="relative overflow-hidden bg-white">
             <img
               src="${escapeHtml(getTemplateImage(template))}"
