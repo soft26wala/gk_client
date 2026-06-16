@@ -1,0 +1,60 @@
+import { c as createComponent } from './consts_lZTZLDJh.mjs';
+import 'piccolore';
+import { X as renderComponent, Y as renderTemplate, aJ as maybeRenderHead } from './sequence_BOg4xrWM.mjs';
+import { $ as $$MainLayout } from './MainLayout_DWGq4cje.mjs';
+
+const $$Aboutus = createComponent(($$result, $$props, $$slots) => {
+  const aboutSections = [
+    {
+      title: "Company Overview",
+      description: "GK Enterprise is a trusted manufacturer and supplier of high-quality rebar couplers and construction connection solutions. We focus on precision engineering, reliable performance, and customer satisfaction for infrastructure, residential, and industrial projects."
+    },
+    {
+      title: "Mission And Vision",
+      description: "Our mission is to deliver durable and efficient reinforcement connection systems that improve construction quality and productivity. Our vision is to become a trusted name in the construction industry through innovation, quality, and long-term partnerships."
+    },
+    {
+      title: "Why Choose GK",
+      description: "We provide premium quality products with precise manufacturing, strong quality control, reliable supply chain management, and customer-focused service to ensure complete project confidence."
+    },
+    {
+      title: "Health Safety & Environment",
+      description: "GK Enterprise follows responsible manufacturing practices with a strong commitment to workplace safety, environmental awareness, and sustainable operations that support safer construction solutions."
+    },
+    {
+      title: "Key Highlights",
+      points: [
+        "Premium Quality Rebar Couplers",
+        "Precision Manufacturing",
+        "Strong Structural Performance",
+        "Reliable Delivery Network",
+        "Strict Quality Testing",
+        "Customer-Focused Support"
+      ]
+    }
+  ];
+  return renderTemplate`${renderComponent($$result, "MainLayout", $$MainLayout, {}, { "default": ($$result2) => renderTemplate` ${maybeRenderHead()}<section class="relative overflow-hidden py-20"> <!-- <FAQ /> --> <!-- Background Glow --> <div class="absolute left-0 top-10 h-96 w-96 rounded-full bg-yellow-500/10 blur-3xl"></div> <div class="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-orange-500/10 blur-3xl"></div> <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"> <!-- HERO IMAGE --> <div class="relative overflow-hidden rounded-[40px] border border-white/10 shadow-2xl"> <img src="/src/images/about/about-main.jpeg" alt="GK Enterprise" class="h-[500px] w-full object-cover"> <!-- Overlay --> <div class="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent"></div> <!-- Hero Content --> <div class="absolute bottom-0 left-0 z-10 p-8 md:p-14"> <span class="rounded-full border border-yellow-400/30 bg-yellow-400/10 px-4 py-1 text-sm font-semibold text-yellow-400 backdrop-blur-xl">
+About GK Enterprise
+</span> <h1 class="mt-5 max-w-4xl text-4xl font-bold tracking-tight text-white md:text-6xl">
+Building Stronger Connections For Modern Construction
+</h1> <p class="mt-5 max-w-3xl text-base leading-7 text-neutral-300 md:text-lg">
+Trusted manufacturer of premium rebar couplers engineered for
+          durability, precision, and reliable structural performance.
+</p> </div> </div> <!-- ABOUT CONTENT --> <div class="mt-16 grid gap-8"> ${aboutSections.map((section) => renderTemplate`<div class="rounded-[32px] border border-white/10 bg-white/70 p-8 shadow-2xl backdrop-blur-2xl dark:bg-white/5"> <h2 class="text-2xl font-bold text-neutral-900 dark:text-white md:text-3xl"> ${section.title} </h2> ${section.description && renderTemplate`<p class="mt-5 max-w-5xl text-base leading-8 text-neutral-600 dark:text-neutral-400"> ${section.description} </p>`} ${section.points && renderTemplate`<div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"> ${section.points.map((point) => renderTemplate`<div class="flex items-center gap-3 rounded-2xl border border-white/10 bg-yellow-400/10 p-4"> <div class="flex h-10 w-10 items-center justify-center rounded-full bg-yellow-400/20 text-lg">
+✓
+</div> <span class="font-medium text-neutral-800 dark:text-neutral-200"> ${point} </span> </div>`)} </div>`} </div>`)} </div> </div> </section> ` })}`;
+}, "C:/myProject/G K Enterprise/client/src/pages/aboutus.astro", void 0);
+
+const $$file = "C:/myProject/G K Enterprise/client/src/pages/aboutus.astro";
+const $$url = "/aboutus";
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: $$Aboutus,
+  file: $$file,
+  url: $$url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };
