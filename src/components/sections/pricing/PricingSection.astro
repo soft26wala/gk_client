@@ -134,6 +134,8 @@ const apiBase = import.meta.env.PUBLIC_API || 'https://gk-api-t0fo.onrender.com'
     return `
       <a
         href="${location.origin}/products/${id}"
+        onclick="window.location.href='${location.origin}/products/${id}';"
+        target="_self"
         class="min-w-[85%] sm:min-w-[48%] lg:min-w-[31%] xl:min-w-[24%] snap-start"
       >
         <div class="group overflow-hidden rounded-3xl border border-neutral-200/20 bg-white/70 shadow-xl backdrop-blur-2xl transition duration-500 hover:-translate-y-2 hover:shadow-2xl dark:border-white/10 dark:bg-neutral-900/30">
