@@ -8,7 +8,7 @@ import mdx from '@astrojs/mdx';
 // https://astro.build/config
 export default defineConfig({
   // https://docs.astro.build/en/guides/images/#authorizing-remote-images
-  site: 'https://gk.uk',
+  site: 'https://gkenterpris.com',
   image: {
     domains: ['images.unsplash.com'],
   },
@@ -21,7 +21,7 @@ export default defineConfig({
   //   routing: {
   //     prefixDefaultLocale: false,
   //   },
-  // },
+  // },sitr
   output: 'server',
   adapter: vercel(),
   prefetch: true,

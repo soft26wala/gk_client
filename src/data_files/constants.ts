@@ -1,14 +1,14 @@
 import ogImageSrc from '@images/social.png';
 
-export const SITE = {
+export const  SITE = {
   title: 'G K Enterprise',
   tagline: 'Top-quality Hardware Tools',
   description:
     'G K Enterprise offers top-tier hardware tools and expert construction services to meet all your project needs. Start exploring and contact our sales team for superior quality and reliability.',
   description_short:
     'G K Enterprise offers top-tier hardware tools and expert construction services to meet all your project needs.',
-  url: 'https://gkenterprise.uk',
-  author: 'Emil Gulamov',
+  url: 'https://gkenterprise.com',
+  author: 'gkenterprise',
 };
 
 export const SEO = {
