@@ -42,6 +42,7 @@ export const OG = {
   title: `${SITE.title}: : Hardware Tools & Construction Services`,
   description:
     'Discover premium industrial hardware tools from GK Enterprise. Trusted quality, competitive prices and fast delivery across India.',
+  image: ogImageSrc,
 };
 
 export const partnersData = [
