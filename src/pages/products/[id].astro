@@ -26,9 +26,97 @@ const pageTitle = product?.name
   ? `${product.name} | G K Enterprise`
   : 'Product not found | G K Enterprise';
 
-const descriptionText = typeof product?.description === 'string' ? product.description : '';
-const highlights = Array.isArray(product?.highlights) ? product.highlights : [];
+const rawDescription = typeof product?.description === 'string' ? product.description : '';
 const imageUrl = product?.image_url || product?.image || product?.imageUrl || '';
+
+const formatText = (value: string) =>
+  value
+    .replace(/\r/g, '')
+    .replace(/\s+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+
+const extractSection = (text: string, startMarker: string, endMarkers: string[]) => {
+  const startIndex = text.indexOf(startMarker);
+  if (startIndex === -1) return '';
+
+  const afterMarker = text.slice(startIndex + startMarker.length);
+  const nextIndex = endMarkers.reduce((closest, marker) => {
+    const index = afterMarker.indexOf(marker);
+    if (index >= 0 && (closest === -1 || index < closest)) {
+      return index;
+    }
+    return closest;
+  }, -1);
+
+  const sectionText = nextIndex === -1 ? afterMarker : afterMarker.slice(0, nextIndex);
+  return formatText(sectionText);
+};
+
+const introText = formatText(
+  rawDescription
+    .split('###')[0]
+    .replace(/^Product\s*Features\s*:??\s*$/i, '')
+    .replace(/^Product\s*Benefits\s*:??\s*$/i, '')
+    .replace(/^Cost\s*Efficiency\s*:??\s*$/i, '')
+    .replace(/^Applications\s*:??\s*$/i, '')
+    .replace(/^Benefits\s*:??\s*$/i, '')
+    .replace(/^Available\s*Sizes\s*:??\s*$/i, '')
+    .replace(/^Available\s*Pitch\s*Sizes\s*:??\s*$/i, '')
+);
+
+const sections = [
+  ...(introText
+    ? [{ title: 'Description', content: introText }]
+    : []),
+  ...[
+    {
+      title: 'Product Features',
+      marker: '###PRODUCT_FEATURES###',
+      endMarkers: ['###APPLICATIONS###', '###PRODUCT_BENEFITS###', '###COST_EFFICIENCY###', '###BENEFITS_COST###', '###AVAILABLE_SIZES###', '###AVAILABLE_PITCH_SIZES###', '###BENEFITS###'],
+    },
+    {
+      title: 'Applications',
+      marker: '###APPLICATIONS###',
+      endMarkers: ['###PRODUCT_BENEFITS###', '###COST_EFFICIENCY###', '###BENEFITS_COST###', '###AVAILABLE_SIZES###', '###AVAILABLE_PITCH_SIZES###', '###BENEFITS###'],
+    },
+    {
+      title: 'Product Benefits',
+      marker: '###PRODUCT_BENEFITS###',
+      endMarkers: ['###COST_EFFICIENCY###', '###BENEFITS_COST###', '###AVAILABLE_SIZES###', '###AVAILABLE_PITCH_SIZES###', '###BENEFITS###'],
+    },
+    {
+      title: 'Cost Efficiency',
+      marker: '###COST_EFFICIENCY###',
+      endMarkers: ['###BENEFITS_COST###', '###AVAILABLE_SIZES###', '###AVAILABLE_PITCH_SIZES###', '###BENEFITS###'],
+    },
+    {
+      title: 'Benefits of GK Enterprise MBT Couplers Cost',
+      marker: '###BENEFITS_COST###',
+      endMarkers: ['###AVAILABLE_SIZES###', '###AVAILABLE_PITCH_SIZES###', '###BENEFITS###'],
+    },
+    {
+      title: 'Available Sizes',
+      marker: '###AVAILABLE_SIZES###',
+      endMarkers: ['###AVAILABLE_PITCH_SIZES###', '###BENEFITS###'],
+    },
+    {
+      title: 'Available Pitch Sizes',
+      marker: '###AVAILABLE_PITCH_SIZES###',
+      endMarkers: ['###BENEFITS###'],
+    },
+    {
+      title: 'Benefits',
+      marker: '###BENEFITS###',
+      endMarkers: [],
+    },
+  ]
+    .map((item) => ({
+      title: item.title,
+      content: extractSection(rawDescription, item.marker, item.endMarkers),
+    }))
+    .filter((item) => item.content)
+];
 ---
 
 <Layout title={pageTitle}>
@@ -54,21 +142,20 @@ const imageUrl = product?.image_url || product?.image || product?.imageUrl || ''
               <h1 class="text-4xl font-black sm:text-5xl">{product.name}</h1>
             </div>
 
-            <div class="rounded-3xl border border-neutral-300/80 bg-white/80 p-8 shadow-sm dark:border-neutral-700 dark:bg-neutral-900/70">
-              <h2 class="mb-4 text-2xl font-bold">Description</h2>
-              <p class="whitespace-pre-line text-base leading-8 text-neutral-700 dark:text-neutral-300">
-                {descriptionText}
-              </p>
-            </div>
-
-            {highlights.length > 0 && (
-              <div class="rounded-3xl border border-neutral-300/80 bg-white/80 p-8 shadow-sm dark:border-neutral-700 dark:bg-neutral-900/70">
-                <h2 class="mb-4 text-2xl font-bold">Highlights</h2>
-                <ul class="list-disc space-y-2 pl-6 text-base leading-7 text-neutral-700 dark:text-neutral-300">
-                  {highlights.map((item: string) => (
-                    <li>{item}</li>
-                  ))}
-                </ul>
+            {sections.length > 0 ? (
+              <div class="space-y-6">
+                {sections.map((section) => (
+                  <div class="rounded-3xl border border-neutral-300/80 bg-white/80 p-8 shadow-sm dark:border-neutral-700 dark:bg-neutral-900/70">
+                    <h2 class="mb-4 text-2xl font-bold">{section.title}</h2>
+                    <p class="whitespace-pre-line text-base leading-8 text-neutral-700 dark:text-neutral-300">
+                      {section.content}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div class="rounded-3xl border border-dashed border-neutral-300 p-10 text-center text-lg text-neutral-600 dark:border-neutral-700 dark:text-neutral-400">
+                No details available.
               </div>
             )}
 
