@@ -8,14 +8,11 @@ import Layout from '../../layouts/MainLayout.astro';
 export const prerender = false;
 
 const { id } = Astro.params;
-const apiBase = import.meta.env.PUBLIC_API || 'https://gk-api-t0fo.onrender.com';
 
 let product = null;
 
 try {
-  const response = await fetch(`${apiBase}/templates/${id}`, {
-    cache: 'no-store',
-  });
+  const response = await fetch(`${import.meta.env.PUBLIC_API}/templates/${id}`);
   if (!response.ok) throw new Error(`API Error: ${response.status}`);
   product = await response.json();
 } catch (e) {
@@ -117,16 +114,21 @@ description.includes("###PRODUCT_FEATURES###") && (
 {
 description.includes("###APPLICATIONS###") && (
 <div class="rounded-3xl border border-black p-8">
-<h3 class="text-xl font-bold mb-5">Applications</h3>
+
+<h3 class="text-xl font-bold mb-5">
+Applications
+</h3>
+
 <p
 set:html={
 description
-.split("###AVAILABLE_SIZES###")[1]
-?.split("###BENEFITS###")[0]
-?.split("###PRODUCT_FEATURES###")[0]
-?.split("###APPLICATIONS###")[0]
+.split("###APPLICATIONS###")[1]
 ?.split("###PRODUCT_BENEFITS###")[0]
 ?.split("###COST_EFFICIENCY###")[0]
+?.split("###BENEFITS_COST###")[0]
+?.split("###AVAILABLE_SIZES###")[0]
+?.split("###AVAILABLE_PITCH_SIZES###")[0]
+?.split("###BENEFITS###")[0]
 }
 />
 
@@ -153,33 +155,9 @@ description.includes("###COST_EFFICIENCY###") && (
 }
 
 {
-description.includes("###BENEFITS_COST###") && (
-<div class="rounded-3xl border border-black p-8">
-<h3 class="text-xl font-bold mb-5">Benefits of GK Enterprise MBT Couplers Cost</h3>
-<p set:html={description.split("###BENEFITS_COST###")[1]} />
-</div>
-)
-}
-
-
-{
-description.includes("###AVAILABLE_PITCH_SIZES###") && (
-<div class="rounded-3xl border border-black p-8">
-<h3 class="text-xl font-bold mb-5">
-Available Pitch Sizes
-</h3>
-
-<p
-set:html={
-description
-.split("###AVAILABLE_PITCH_SIZES###")[1]
-?.split("###BENEFITS###")[0]
-}
-
-
-{
 description.includes("###BENEFITS###") && (
 <div class="rounded-3xl border border-black p-8">
+
 <h3 class="text-xl font-bold mb-5">
 Benefits
 </h3>
@@ -193,6 +171,44 @@ description
 
 </div>
 )
+}
+
+
+{
+description.includes("###AVAILABLE_SIZES###") && (
+<div class="rounded-3xl border border-black p-8">
+
+<h3 class="text-xl font-bold mb-5">
+Available Sizes
+</h3>
+
+<p
+set:html={
+description
+.split("###AVAILABLE_SIZES###")[1]
+?.split("###AVAILABLE_PITCH_SIZES###")[0]
+?.split("###BENEFITS###")[0]
+}
+/>
+
+</div>
+)
+}
+
+
+{
+description.includes("###AVAILABLE_PITCH_SIZES###") && (
+<div class="rounded-3xl border border-black p-8">
+
+<h3 class="text-xl font-bold mb-5">
+Available Pitch Sizes
+</h3>
+
+<p
+set:html={
+description
+.split("###AVAILABLE_PITCH_SIZES###")[1]
+?.split("###BENEFITS###")[0]
 }
 />
 
