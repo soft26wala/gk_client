@@ -51,13 +51,13 @@ description = description.replace(/\.\s+/g,".<br>");
 
 const descriptionOnly = description
   .split("###PRODUCT_FEATURES###")[0]
-  .split("###APPLICATIONS###")[0]
-  .split("###PRODUCT_BENEFITS###")[0]
-  .split("###COST_EFFICIENCY###")[0]
-  .split("###BENEFITS_COST###")[0]
-  .split("###Available Pitch Sizes###")[0]
-  .split("###Available Sizes###")[0]
-  .split("###Benefits###")[0]
+  ?.split("###APPLICATIONS###")[0]
+  ?.split("###PRODUCT_BENEFITS###")[0]
+  ?.split("###COST_EFFICIENCY###")[0]
+  ?.split("###BENEFITS_COST###")[0]
+  ?.split("###Available Pitch Sizes###")[0]
+  ?.split("###Available Sizes###")[0]
+  ?.split("###Benefits###")[0]
   .trim();
 ---
 
