@@ -46,7 +46,7 @@ description = description.replace(
 description = description.replace(/:-/g,"");
 description = description.replace(/:/g,"");
 description = description.replace(/\s-\s/g,"<br>");
-description = description.replace(/(\d+)\s+/g,"<br>$1 ");
+description = description.replace(/(\d+)\s+/g,"$1");
 description = description.replace(/\.\s+/g,".<br>");
 
 const descriptionOnly = description
@@ -55,6 +55,9 @@ const descriptionOnly = description
   .split("###PRODUCT_BENEFITS###")[0]
   .split("###COST_EFFICIENCY###")[0]
   .split("###BENEFITS_COST###")[0]
+  .split("###Available Pitch Sizes###")[0]
+  .split("###Available Sizes###")[0]
+  .split("###Benefits###")[0]
   .trim();
 ---
 
