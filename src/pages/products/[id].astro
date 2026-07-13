@@ -43,6 +43,21 @@ description = description.replace(
 "###BENEFITS_COST###"
 );
 
+description = description.replace(
+/Available\s*Sizes\s*:?/gi,
+"###AVAILABLE_SIZES###"
+);
+
+description = description.replace(
+/Available\s*Pitch\s*Sizes\s*:?/gi,
+"###AVAILABLE_PITCH_SIZES###"
+);
+
+description = description.replace(
+/Benefits\s*:?/gi,
+"###BENEFITS###"
+);
+
 description = description.replace(/:-/g,"");
 description = description.replace(/:/g,"");
 description = description.replace(/\s-\s/g,"<br>");
@@ -51,13 +66,13 @@ description = description.replace(/\.\s+/g,".<br>");
 
 const descriptionOnly = description
   .split("###PRODUCT_FEATURES###")[0]
-  ?.split("###APPLICATIONS###")[0]
-  ?.split("###PRODUCT_BENEFITS###")[0]
-  ?.split("###COST_EFFICIENCY###")[0]
-  ?.split("###BENEFITS_COST###")[0]
-  ?.split("###Available Pitch Sizes###")[0]
-  ?.split("###Available Sizes###")[0]
-  ?.split("###Benefits###")[0]
+  .split("###APPLICATIONS###")[0]
+  .split("###PRODUCT_BENEFITS###")[0]
+  .split("###COST_EFFICIENCY###")[0]
+  .split("###BENEFITS_COST###")[0]
+  .split("###AVAILABLE_SIZES###")[0]
+  .split("###AVAILABLE_PITCH_SIZES###")[0]
+  .split("###BENEFITS###")[0]
   .trim();
 ---
 
@@ -100,7 +115,18 @@ description.includes("###PRODUCT_FEATURES###") && (
 description.includes("###APPLICATIONS###") && (
 <div class="rounded-3xl border border-black p-8">
 <h3 class="text-xl font-bold mb-5">Applications</h3>
-<p set:html={description.split("###APPLICATIONS###")[1]?.split("###PRODUCT_BENEFITS###")[0]?.split("###COST_EFFICIENCY###")[0]?.split("###BENEFITS_COST###")[0]} />
+<p
+set:html={
+description
+.split("###AVAILABLE_SIZES###")[1]
+?.split("###BENEFITS###")[0]
+?.split("###PRODUCT_FEATURES###")[0]
+?.split("###APPLICATIONS###")[0]
+?.split("###PRODUCT_BENEFITS###")[0]
+?.split("###COST_EFFICIENCY###")[0]
+}
+/>
+
 </div>
 )
 }
@@ -128,6 +154,26 @@ description.includes("###BENEFITS_COST###") && (
 <div class="rounded-3xl border border-black p-8">
 <h3 class="text-xl font-bold mb-5">Benefits of GK Enterprise MBT Couplers Cost</h3>
 <p set:html={description.split("###BENEFITS_COST###")[1]} />
+</div>
+)
+}
+
+
+{
+description.includes("###AVAILABLE_PITCH_SIZES###") && (
+<div class="rounded-3xl border border-black p-8">
+<h3 class="text-xl font-bold mb-5">
+Available Pitch Sizes
+</h3>
+
+<p
+set:html={
+description
+.split("###AVAILABLE_PITCH_SIZES###")[1]
+?.split("###BENEFITS###")[0]
+}
+/>
+
 </div>
 )
 }
