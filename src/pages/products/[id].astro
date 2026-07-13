@@ -1,4 +1,8 @@
 ---
+// NOTE:
+// Replace this parser section with the one from the previous message if needed.
+// This file is a template showing where the parsing logic goes.
+
 import Layout from '../../layouts/MainLayout.astro';
 
 export const prerender = false;
@@ -6,152 +10,205 @@ export const prerender = false;
 const { id } = Astro.params;
 const apiBase = import.meta.env.PUBLIC_API || 'https://gk-api-t0fo.onrender.com';
 
-let product: Record<string, any> | null = null;
+let product = null;
 
 try {
   const response = await fetch(`${apiBase}/templates/${id}`, {
     cache: 'no-store',
   });
-
-  if (!response.ok) {
-    throw new Error(`API Error: ${response.status}`);
-  }
-
+  if (!response.ok) throw new Error(`API Error: ${response.status}`);
   product = await response.json();
-} catch (error) {
-  console.error(error);
+} catch (e) {
+  console.error(e);
 }
 
 const pageTitle = product?.name
   ? `${product.name} | G K Enterprise`
-  : 'Product not found | G K Enterprise';
+  : "Product not found | G K Enterprise";
 
-const rawDescription = typeof product?.description === 'string' ? product.description : '';
-const imageUrl = product?.image_url || product?.image || product?.imageUrl || '';
+const rawDescription = product?.description || "";
 
-const normalizeText = (value: string) =>
-  value.replace(/\r/g, '').replace(/\u00a0/g, ' ').trim();
+let description = rawDescription;
 
-const sectionPatterns = [
-  { title: 'Product Features', regex: /^(?:Product\s+Features|Features)\s*:\s*$/i },
-  { title: 'Applications', regex: /^Applications\s*:\s*$/i },
-  { title: 'Product Benefits', regex: /^(?:Product\s+Benefits|Benefits)\s*:\s*$/i },
-  { title: 'Cost Efficiency', regex: /^Cost\s+Efficiency\s*:\s*$/i },
-  {
-    title: 'Benefits of GK Enterprise MBT Couplers Cost',
-    regex: /^Benefits\s+of\s+GK\s+Enterprise\s+MBT\s+Couplers\s+Cost\s*:\s*$/i,
-  },
-  { title: 'Available Sizes', regex: /^Available\s+Sizes\s*:\s*$/i },
-  { title: 'Available Pitch Sizes', regex: /^Available\s+Pitch\s+Sizes\s*:\s*$/i },
-];
+description = description.replace(/Product\s*Features\s*:/gi,"###PRODUCT_FEATURES###");
+description = description.replace(/Product\s*Features/gi,"###PRODUCT_FEATURES###");
 
-const formatSectionContent = (value: string) =>
-  value
-    .replace(/^[-•]\s+/gm, '• ')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
+description = description.replace(/Product\s*Benefits\s*:/gi,"###PRODUCT_BENEFITS###");
+description = description.replace(/Product\s*Benefits/gi,"###PRODUCT_BENEFITS###");
 
-const parseSections = (value: string) => {
-  const normalized = normalizeText(value);
-  const lines = normalized.split('\n');
-  const sections: Array<{ title: string; content: string }> = [];
-  const introLines: string[] = [];
-  let currentSection: { title: string; content: string[] } | null = null;
+description = description.replace(/Cost\s*Efficiency\s*:/gi,"###COST_EFFICIENCY###");
+description = description.replace(/Cost\s*Efficiency/gi,"###COST_EFFICIENCY###");
 
-  for (const line of lines) {
-    const heading = sectionPatterns.find((pattern) => pattern.regex.test(line.trim()));
+description = description.replace(/Applications\s*:/g,"###APPLICATIONS###");
 
-    if (heading) {
-      if (currentSection) {
-        sections.push({
-          title: currentSection.title,
-          content: formatSectionContent(currentSection.content.join('\n')),
-        });
-      }
+description = description.replace(
+/Benefits\s+of\s+GK\s+Enterprise\s+MBT\s+Couplers\s+Cost\s*:?/gi,
+"###BENEFITS_COST###"
+);
 
-      currentSection = { title: heading.title, content: [] };
-      continue;
-    }
+description = description.replace(
+/Available\s*Sizes\s*:?/gi,
+"###AVAILABLE_SIZES###"
+);
 
-    if (currentSection) {
-      currentSection.content.push(line);
-    } else {
-      introLines.push(line);
-    }
-  }
+description = description.replace(
+/Available\s*Pitch\s*Sizes\s*:?/gi,
+"###AVAILABLE_PITCH_SIZES###"
+);
 
-  if (currentSection) {
-    sections.push({
-      title: currentSection.title,
-      content: formatSectionContent(currentSection.content.join('\n')),
-    });
-  }
+description = description.replace(
+/Benefits\s*:?/gi,
+"###BENEFITS###"
+);
 
-  const intro = formatSectionContent(introLines.join('\n'));
+description = description.replace(/:-/g,"");
+description = description.replace(/:/g,"");
+description = description.replace(/\s-\s/g,"<br>");
+description = description.replace(/(\d+)\s+/g,"$1");
+description = description.replace(/\.\s+/g,".<br>");
 
-  if (intro) {
-    sections.unshift({ title: 'Description', content: intro });
-  }
-
-  return sections.filter((section) => section.content);
-};
-
-const sectionBlocks = parseSections(rawDescription);
+const descriptionOnly = description
+  .split("###PRODUCT_FEATURES###")[0]
+  .split("###APPLICATIONS###")[0]
+  .split("###PRODUCT_BENEFITS###")[0]
+  .split("###COST_EFFICIENCY###")[0]
+  .split("###BENEFITS_COST###")[0]
+  .split("###AVAILABLE_SIZES###")[0]
+  .split("###AVAILABLE_PITCH_SIZES###")[0]
+  .split("###BENEFITS###")[0]
+  .trim();
 ---
 
 <Layout title={pageTitle}>
-  <main class="min-h-screen px-4 pb-12 pt-24 dark:bg-neutral-800 dark:text-white">
-    <div class="mx-auto max-w-7xl">
-      {product ? (
-        <div class="grid grid-cols-1 gap-12 lg:grid-cols-2">
-          <div>
-            {imageUrl && (
-              <img
-                src={imageUrl}
-                alt={product.name || 'Product image'}
-                class="w-full rounded-3xl object-contain"
-              />
-            )}
-          </div>
+<main class="min-h-screen px-4 pt-24 pb-12 dark:bg-neutral-800 dark:text-white">
 
-          <div class="space-y-8">
-            <div class="space-y-3">
-              <p class="text-sm font-semibold uppercase tracking-[0.25em] text-orange-600">
-                {product.category || 'Product'}
-              </p>
-              <h1 class="text-4xl font-black sm:text-5xl">{product.name}</h1>
-            </div>
+<div class="mx-auto max-w-7xl">
 
-            {sectionBlocks.length > 0 ? (
-              <div class="space-y-6">
-                {sectionBlocks.map((section) => (
-                  <div class="rounded-3xl border border-neutral-300/80 bg-white/80 p-8 shadow-sm dark:border-neutral-700 dark:bg-neutral-900/70">
-                    <h2 class="mb-4 text-2xl font-bold">{section.title}</h2>
-                    <p class="whitespace-pre-line text-base leading-8 text-neutral-700 dark:text-neutral-300">
-                      {section.content}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div class="rounded-3xl border border-dashed border-neutral-300 p-10 text-center text-lg text-neutral-600 dark:border-neutral-700 dark:text-neutral-400">
-                No details available.
-              </div>
-            )}
+{product ? (
 
-            <a
-              href="/products"
-              class="inline-flex items-center gap-2 rounded-full border border-neutral-300 px-5 py-3 text-sm font-semibold text-neutral-800 transition hover:-translate-y-0.5 hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-100 dark:hover:bg-neutral-800"
-            >
-              ← Back to products
-            </a>
-          </div>
-        </div>
-      ) : (
-        <div class="rounded-3xl border border-dashed border-neutral-300 p-10 text-center text-lg text-neutral-600 dark:border-neutral-700 dark:text-neutral-400">
-          Product not found.
-        </div>
-      )}
-    </div>
-  </main>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+
+<div>
+<img src={product.image_url} alt={product.name} class="rounded-3xl w-full"/>
+</div>
+
+<div class="space-y-8">
+
+<h1 class="text-5xl font-black">{product.name}</h1>
+
+{
+!/^\s*Product\s*Features\s*:?\s*$/i.test(rawDescription) && (
+<div class="rounded-3xl border border-black p-8">
+<h3 class="text-xl font-bold mb-5">Description</h3>
+<p set:html={descriptionOnly}></p>
+</div>
+)
+}
+
+{
+description.includes("###PRODUCT_FEATURES###") && (
+<div class="rounded-3xl border border-black p-8">
+<h3 class="text-xl font-bold mb-5">Product Features</h3>
+<p set:html={description.split("###PRODUCT_FEATURES###")[1]?.split("###APPLICATIONS###")[0]?.split("###PRODUCT_BENEFITS###")[0]?.split("###COST_EFFICIENCY###")[0]?.split("###BENEFITS_COST###")[0]} />
+</div>
+)
+}
+
+{
+description.includes("###APPLICATIONS###") && (
+<div class="rounded-3xl border border-black p-8">
+<h3 class="text-xl font-bold mb-5">Applications</h3>
+<p
+set:html={
+description
+.split("###AVAILABLE_SIZES###")[1]
+?.split("###BENEFITS###")[0]
+?.split("###PRODUCT_FEATURES###")[0]
+?.split("###APPLICATIONS###")[0]
+?.split("###PRODUCT_BENEFITS###")[0]
+?.split("###COST_EFFICIENCY###")[0]
+}
+/>
+
+</div>
+)
+}
+
+{
+description.includes("###PRODUCT_BENEFITS###") && (
+<div class="rounded-3xl border border-black p-8">
+<h3 class="text-xl font-bold mb-5">Product Benefits</h3>
+<p set:html={description.split("###PRODUCT_BENEFITS###")[1]?.split("###COST_EFFICIENCY###")[0]?.split("###BENEFITS_COST###")[0]} />
+</div>
+)
+}
+
+{
+description.includes("###COST_EFFICIENCY###") && (
+<div class="rounded-3xl border border-black p-8">
+<h3 class="text-xl font-bold mb-5">Cost Efficiency</h3>
+<p set:html={description.split("###COST_EFFICIENCY###")[1]?.split("###BENEFITS_COST###")[0]} />
+</div>
+)
+}
+
+{
+description.includes("###BENEFITS_COST###") && (
+<div class="rounded-3xl border border-black p-8">
+<h3 class="text-xl font-bold mb-5">Benefits of GK Enterprise MBT Couplers Cost</h3>
+<p set:html={description.split("###BENEFITS_COST###")[1]} />
+</div>
+)
+}
+
+
+{
+description.includes("###AVAILABLE_PITCH_SIZES###") && (
+<div class="rounded-3xl border border-black p-8">
+<h3 class="text-xl font-bold mb-5">
+Available Pitch Sizes
+</h3>
+
+<p
+set:html={
+description
+.split("###AVAILABLE_PITCH_SIZES###")[1]
+?.split("###BENEFITS###")[0]
+}
+
+
+{
+description.includes("###BENEFITS###") && (
+<div class="rounded-3xl border border-black p-8">
+<h3 class="text-xl font-bold mb-5">
+Benefits
+</h3>
+
+<p
+set:html={
+description
+.split("###BENEFITS###")[1]
+}
+/>
+
+</div>
+)
+}
+/>
+
+</div>
+)
+}
+
+</div>
+
+</div>
+
+) : (
+<h1>Product not found</h1>
+)}
+
+</div>
+
+</main>
 </Layout>
