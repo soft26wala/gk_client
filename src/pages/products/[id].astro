@@ -8,72 +8,32 @@ import Layout from '../../layouts/MainLayout.astro';
 export const prerender = false;
 
 const { id } = Astro.params;
+const apiBase = import.meta.env.PUBLIC_API || 'https://gk-api-t0fo.onrender.com';
 
-let product = null;
+let product: Record<string, any> | null = null;
 
 try {
-  const response = await fetch(`${import.meta.env.PUBLIC_API}/templates/${id}`);
-  if (!response.ok) throw new Error(`API Error: ${response.status}`);
+  const response = await fetch(`${apiBase}/templates/${id}`, {
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    throw new Error(`API Error: ${response.status}`);
+  }
+
   product = await response.json();
-} catch (e) {
-  console.error(e);
+} catch (error) {
+  console.error(error);
 }
 
 const pageTitle = product?.name
   ? `${product.name} | G K Enterprise`
-  : "Product not found | G K Enterprise";
+  : 'Product not found | G K Enterprise';
 
-const rawDescription = product?.description || "";
-
-let description = rawDescription;
-
-description = description.replace(/Product\s*Features\s*:/gi,"###PRODUCT_FEATURES###");
-description = description.replace(/Product\s*Features/gi,"###PRODUCT_FEATURES###");
-
-description = description.replace(/Product\s*Benefits\s*:/gi,"###PRODUCT_BENEFITS###");
-description = description.replace(/Product\s*Benefits/gi,"###PRODUCT_BENEFITS###");
-
-description = description.replace(/Cost\s*Efficiency\s*:/gi,"###COST_EFFICIENCY###");
-description = description.replace(/Cost\s*Efficiency/gi,"###COST_EFFICIENCY###");
-
-description = description.replace(/Applications\s*:/g,"###APPLICATIONS###");
-
-description = description.replace(
-/Benefits\s+of\s+GK\s+Enterprise\s+MBT\s+Couplers\s+Cost\s*:?/gi,
-"###BENEFITS_COST###"
-);
-
-description = description.replace(
-/Available\s*Sizes\s*:?/gi,
-"###AVAILABLE_SIZES###"
-);
-
-description = description.replace(
-/Available\s*Pitch\s*Sizes\s*:?/gi,
-"###AVAILABLE_PITCH_SIZES###"
-);
-
-description = description.replace(
-/Benefits\s*:?/gi,
-"###BENEFITS###"
-);
-
-description = description.replace(/:-/g,"");
-description = description.replace(/:/g,"");
-description = description.replace(/\s-\s/g,"<br>");
-description = description.replace(/(\d+)\s+/g,"$1");
-description = description.replace(/\.\s+/g,".<br>");
-
-const descriptionOnly = description
-  .split("###PRODUCT_FEATURES###")[0]
-  .split("###APPLICATIONS###")[0]
-  .split("###PRODUCT_BENEFITS###")[0]
-  .split("###COST_EFFICIENCY###")[0]
-  .split("###BENEFITS_COST###")[0]
-  .split("###AVAILABLE_SIZES###")[0]
-  .split("###AVAILABLE_PITCH_SIZES###")[0]
-  .split("###BENEFITS###")[0]
-  .trim();
+const description = product?.description || 'No description available.';
+const highlights = Array.isArray(product?.highlights)
+  ? product.highlights
+  : [];
 ---
 
 <Layout title={pageTitle}>
@@ -171,6 +131,25 @@ set:html={
 description
 .split("###AVAILABLE_PITCH_SIZES###")[1]
 ?.split("###BENEFITS###")[0]
+}
+
+
+{
+description.includes("###BENEFITS###") && (
+<div class="rounded-3xl border border-black p-8">
+<h3 class="text-xl font-bold mb-5">
+Benefits
+</h3>
+
+<p
+set:html={
+description
+.split("###BENEFITS###")[1]
+}
+/>
+
+</div>
+)
 }
 />
 
