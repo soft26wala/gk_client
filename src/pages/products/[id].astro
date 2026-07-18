@@ -62,6 +62,15 @@ description = description.replace(
 "###SPECIFICATIONS###"
 );
 
+description = description.replace(
+/###\s*Benefits\s*_COST###/gi,
+"###BENEFITS###"
+);
+
+description = description.replace(
+/###\s*Benefits\s*[\r\n]+_COST###/gi,
+"###BENEFITS###"
+);
 
 description = description.replace(/:-/g,"");
 description = description.replace(/:/g,"");
@@ -86,7 +95,7 @@ const headings = [
 
 function getSection(text: string, heading: string): string {
 
-const start = text.indexOf(heading);
+const start = text.toUpperCase().indexOf(heading.toUpperCase());
 
 if(start==-1) return "";
 
@@ -98,7 +107,7 @@ for(const h of headings){
 
 if(h===heading) continue;
 
-const i = text.indexOf(h,from);
+const i = text.toUpperCase().indexOf(h.toUpperCase(), from);
 
 if(i!=-1 && i<end){
 end=i;
