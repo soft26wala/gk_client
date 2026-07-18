@@ -57,23 +57,70 @@ description = description.replace(
 /Benefits\s*:?/gi,
 "###BENEFITS###"
 );
+description = description.replace(
+/Specifications\s*:?/gi,
+"###SPECIFICATIONS###"
+);
+
 
 description = description.replace(/:-/g,"");
 description = description.replace(/:/g,"");
 description = description.replace(/\s-\s/g,"<br>");
 description = description.replace(/(\d+)\s+/g,"$1");
 description = description.replace(/\.\s+/g,".<br>");
+description = description.replace(
+    /"([^"]+)"/,
+    "<h3>$1</h3><br><br>"
+);
+
+const headings = [
+"###PRODUCT_FEATURES###",
+"###SPECIFICATIONS###",
+"###APPLICATIONS###",
+"###PRODUCT_BENEFITS###",
+"###AVAILABLE_SIZES###",
+"###AVAILABLE_PITCH_SIZES###",
+"###BENEFITS###",
+"###COST_EFFICIENCY###"
+];
+
+function getSection(text: string, heading: string): string {
+
+const start = text.indexOf(heading);
+
+if(start==-1) return "";
+
+const from = start + heading.length;
+
+let end = text.length;
+
+for(const h of headings){
+
+if(h===heading) continue;
+
+const i = text.indexOf(h,from);
+
+if(i!=-1 && i<end){
+end=i;
+}
+
+}
+
+return text.slice(from,end).trim();
+
+}
 
 const descriptionOnly = description
-  .split("###PRODUCT_FEATURES###")[0]
-  .split("###APPLICATIONS###")[0]
-  .split("###PRODUCT_BENEFITS###")[0]
-  .split("###COST_EFFICIENCY###")[0]
-  .split("###BENEFITS_COST###")[0]
-  .split("###AVAILABLE_SIZES###")[0]
-  .split("###AVAILABLE_PITCH_SIZES###")[0]
-  .split("###BENEFITS###")[0]
-  .trim();
+.split("###PRODUCT_FEATURES###")[0]
+.split("###SPECIFICATIONS###")[0]
+.split("###APPLICATIONS###")[0]
+.split("###PRODUCT_BENEFITS###")[0]
+.split("###AVAILABLE_SIZES###")[0]
+.split("###AVAILABLE_PITCH_SIZES###")[0]
+.split("###BENEFITS###")[0]
+.split("###COST_EFFICIENCY###")[0]
+.trim();
+
 ---
 
 <Layout title={pageTitle}>
@@ -106,7 +153,10 @@ const descriptionOnly = description
 description.includes("###PRODUCT_FEATURES###") && (
 <div class="rounded-3xl border border-black p-8">
 <h3 class="text-xl font-bold mb-5">Product Features</h3>
-<p set:html={description.split("###PRODUCT_FEATURES###")[1]?.split("###APPLICATIONS###")[0]?.split("###PRODUCT_BENEFITS###")[0]?.split("###COST_EFFICIENCY###")[0]?.split("###BENEFITS_COST###")[0]} />
+{/* <p set:html={description.split("###PRODUCT_FEATURES###")[1]?.split("###APPLICATIONS###")[0]?.split("###PRODUCT_BENEFITS###")[0]?.split("###COST_EFFICIENCY###")[0]?.split("###BENEFITS_COST###")[0]} /> */}
+<div
+set:html={getSection(description,"###PRODUCT_FEATURES###")}
+/>
 </div>
 )
 }
@@ -122,13 +172,13 @@ Applications
 <p
 set:html={
 description
-.split("###APPLICATIONS###")[1]
-?.split("###PRODUCT_BENEFITS###")[0]
+.getSection(description,"###APPLICATIONS###")
+?.getSection(description,"###PRODUCT_BENEFITS###")
 ?.split("###COST_EFFICIENCY###")[0]
 ?.split("###BENEFITS_COST###")[0]
-?.split("###AVAILABLE_SIZES###")[0]
-?.split("###AVAILABLE_PITCH_SIZES###")[0]
-?.split("###BENEFITS###")[0]
+?.getSection(description,"###AVAILABLE_SIZES###")
+?.getSection(description,"###AVAILABLE_PITCH_SIZES###")
+?.getSection(description,"###BENEFITS###")
 }
 />
 
@@ -213,6 +263,25 @@ description
 />
 
 </div>
+)
+}
+
+
+{
+getSection(description,"###SPECIFICATIONS###") && (
+
+<div class="rounded-3xl border border-black p-8">
+
+<h2 class="text-2xl font-bold mb-5">
+Specifications
+</h2>
+
+<div
+set:html={getSection(description,"###SPECIFICATIONS###")}
+/>
+
+</div>
+
 )
 }
 
