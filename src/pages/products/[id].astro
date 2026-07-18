@@ -174,8 +174,8 @@ set:html={
 description
 .getSection(description,"###APPLICATIONS###")
 ?.getSection(description,"###PRODUCT_BENEFITS###")
-?.split("###COST_EFFICIENCY###")[0]
-?.split("###BENEFITS_COST###")[0]
+?.getSection(description,"###COST_EFFICIENCY###")[0]
+?.getSection(description,"###BENEFITS_COST###")[0]
 ?.getSection(description,"###AVAILABLE_SIZES###")
 ?.getSection(description,"###AVAILABLE_PITCH_SIZES###")
 ?.getSection(description,"###BENEFITS###")
