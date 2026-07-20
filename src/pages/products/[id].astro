@@ -33,8 +33,6 @@ description = description.replace(/Product\s*Features/gi,"###PRODUCT_FEATURES###
 description = description.replace(/Product\s*Benefits\s*:/gi,"###PRODUCT_BENEFITS###");
 description = description.replace(/Product\s*Benefits/gi,"###PRODUCT_BENEFITS###");
 
-description = description.replace(/Cost\s*Efficiency\s*:/gi,"###COST_EFFICIENCY###");
-description = description.replace(/Cost\s*Efficiency/gi,"###COST_EFFICIENCY###");
 
 description = description.replace(/Applications\s*:/g,"###APPLICATIONS###");
 
@@ -89,8 +87,7 @@ const headings = [
 "###PRODUCT_BENEFITS###",
 "###AVAILABLE_SIZES###",
 "###AVAILABLE_PITCH_SIZES###",
-"###BENEFITS###",
-"###COST_EFFICIENCY###"
+"###BENEFITS###"
 ];
 
 function getSection(text: string, heading: string): string {
@@ -127,7 +124,6 @@ const descriptionOnly = description
 .split("###AVAILABLE_SIZES###")[0]
 .split("###AVAILABLE_PITCH_SIZES###")[0]
 .split("###BENEFITS###")[0]
-.split("###COST_EFFICIENCY###")[0]
 .trim();
 
 ---
@@ -183,7 +179,6 @@ set:html={
 description
 .getSection(description,"###APPLICATIONS###")
 ?.getSection(description,"###PRODUCT_BENEFITS###")
-?.getSection(description,"###COST_EFFICIENCY###")[0]
 ?.getSection(description,"###BENEFITS_COST###")[0]
 ?.getSection(description,"###AVAILABLE_SIZES###")
 ?.getSection(description,"###AVAILABLE_PITCH_SIZES###")
@@ -199,19 +194,11 @@ description
 description.includes("###PRODUCT_BENEFITS###") && (
 <div class="rounded-3xl border border-black p-8">
 <h3 class="text-xl font-bold mb-5">Product Benefits</h3>
-<p set:html={description.split("###PRODUCT_BENEFITS###")[1]?.split("###COST_EFFICIENCY###")[0]?.split("###BENEFITS_COST###")[0]} />
+<p set:html={description.split("###PRODUCT_BENEFITS###")[1]?.split("###BENEFITS_COST###")[0]} />
 </div>
 )
 }
 
-{
-description.includes("###COST_EFFICIENCY###") && (
-<div class="rounded-3xl border border-black p-8">
-<h3 class="text-xl font-bold mb-5">Cost Efficiency</h3>
-<p set:html={description.split("###COST_EFFICIENCY###")[1]?.split("###BENEFITS_COST###")[0]} />
-</div>
-)
-}
 
 {
 description.includes("###BENEFITS###") && (
